@@ -1,5 +1,6 @@
 # Escuela-Patinaje
 # INTEGRANTES:
-- Pablo Andres Gomez Estrada
+- Pablo Andrés Gómez Estrada
 - Sebastian David Sanchez Parra
 - Miguel Quintero Jaramillo
+- Estefania Yepes Lopera
