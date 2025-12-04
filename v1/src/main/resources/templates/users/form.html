@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body class="d-flex flex-column" style="min-height: 100vh;">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img th:src="@{/images/logo.png}" alt="Logo" style="height: 40px; margin-right: 10px;">
+        <strong>SkatePro Academy</strong>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="/users/listar">Usuarios</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container mt-5 flex-grow-1">
+    
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        
+        <!-- Título para crear nuevo usuario -->
+        <h1 class="mb-4" th:if="${user.id == null || user.id == 0}">
+          <i class="bi bi-person-plus" style="color: #19C5C2;"></i>
+          Crear Nuevo Usuario
+        </h1>
+        <!-- Título para editar usuario -->
+        <h1 class="mb-4" th:unless="${user.id == null || user.id == 0}">
+          <i class="bi bi-pencil" style="color: #19C5C2;"></i>
+          Editar Usuario
+        </h1>
+
+        <!-- Mensajes de error/éxito -->
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="bi bi-exclamation-circle"></i> <strong>Error:</strong> <span th:text="${error}"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+          <i class="bi bi-check-circle"></i> <strong>Éxito:</strong> <span th:text="${success}"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <!-- Formulario para CREAR nuevo usuario -->
+        <form th:if="${user.id == null || user.id == 0}" th:action="@{/users/guardar}" method="post" class="needs-validation" novalidate>
+          
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre Completo <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="nombre" name="name" placeholder="Juan Pérez" required>
+            <div class="invalid-feedback">Por favor ingresa un nombre.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Correo Electrónico <span class="text-danger">*</span></label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="juan@gmail.com" required>
+            <div class="invalid-feedback">Por favor ingresa un email válido.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña <span class="text-danger">*</span></label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Mínimo 6 caracteres" minlength="6" required>
+            <small class="form-text text-muted">Mínimo 6 caracteres</small>
+            <div class="invalid-feedback">La contraseña debe tener al menos 6 caracteres.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono (Opcional)</label>
+            <input type="tel" class="form-control" id="telefono" name="phone" placeholder="+34 600 000 000">
+          </div>
+
+          <hr>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a th:href="@{/users/listar}" class="btn btn-secondary">
+              <i class="bi bi-x-circle"></i> Cancelar
+            </a>
+            <button type="submit" class="btn btn-success">
+              <i class="bi bi-check-circle"></i> Crear Usuario
+            </button>
+          </div>
+        </form>
+
+        <!-- Formulario para EDITAR usuario existente -->
+        <form th:unless="${user.id == null || user.id == 0}" th:action="@{/users/actualizar/{id}(id=${user.id})}" method="post" class="needs-validation" novalidate>
+          
+          <div class="alert alert-info mb-4">
+            <i class="bi bi-info-circle"></i> Editando usuario ID: <strong th:text="${user.id}"></strong>
+          </div>
+
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre Completo <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="nombre" name="name" th:value="${user.name}" required>
+            <div class="invalid-feedback">Por favor ingresa un nombre.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Correo Electrónico <span class="text-danger">*</span></label>
+            <input type="email" class="form-control" id="email" name="email" th:value="${user.email}" required>
+            <div class="invalid-feedback">Por favor ingresa un email válido.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="password" name="password" minlength="6" placeholder="Dejar vacío para no cambiar">
+            <small class="form-text text-muted">Mínimo 6 caracteres si deseas cambiarla. Dejar vacío mantiene la actual.</small>
+          </div>
+
+          <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="tel" class="form-control" id="telefono" name="phone" th:value="${user.phone}">
+          </div>
+
+          <hr>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a th:href="@{/users/listar}" class="btn btn-secondary">
+              <i class="bi bi-x-circle"></i> Cancelar
+            </a>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check-circle"></i> Actualizar Usuario
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer th:replace="fragments/footer :: footer"></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Validación de formulario
+    (function () {
+      'use strict'
+      const forms = document.querySelectorAll('.needs-validation')
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+  </script>
+
+</body>
+</html>
