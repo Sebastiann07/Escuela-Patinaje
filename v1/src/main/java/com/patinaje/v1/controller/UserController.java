@@ -24,9 +24,18 @@ public class UserController {
     @Autowired
     userService userService;
 
-    // ENDPOINT PARA THUNDER CLIENT (Retorna JSON)
+    // HTML - Muestra los usuarios en una página web
     @GetMapping("/listar")
-    @ResponseBody  // Esta anotación convierte la respuesta a JSON
+    public String listarHTML(Model model) {
+        List<userModel> usuarios = userService.getAllUsers();
+        model.addAttribute("users", usuarios);
+        model.addAttribute("total", usuarios.size());
+        return "users/list";
+    }
+
+    // JSON - Para consumir desde aplicaciones (Thunder Client, Postman, etc)
+    @GetMapping("/api/json")
+    @ResponseBody
     public ResponseEntity<Map<String, Object>> listarJSON() {
         Map<String, Object> response = new HashMap<>();
         
@@ -37,7 +46,7 @@ public class UserController {
             response.put("status", 200);
             response.put("data", usuarios);
             response.put("total", usuarios.size());
-            response.put("path", "/users/listar");
+            response.put("path", "/users/api/json");
             
             return ResponseEntity.ok(response);
             
@@ -46,24 +55,9 @@ public class UserController {
             response.put("status", 500);
             response.put("error", "Internal Server Error");
             response.put("message", e.getMessage());
-            response.put("path", "/users/listar");
+            response.put("path", "/users/api/json");
             
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        }
-    }
-
-    // ENDPOINT PARA PÁGINA WEB (Retorna HTML)
-    @GetMapping("/list")
-    public String listUser(Model model) {
-        try {
-            List<userModel> usuarios = userService.getAllUsers();
-            model.addAttribute("users", usuarios);
-            model.addAttribute("total", usuarios.size());
-            return "users/list";  // Busca templates/users/list.html
-            
-        } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
-            return "users/list";
         }
     }
 }
