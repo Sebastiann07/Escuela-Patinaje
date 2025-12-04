@@ -3,7 +3,7 @@
 
         <!-- LOGO + TITULO -->
         <a class="navbar-brand d-flex align-items-center" href="/">
-            <img th:src="@{/images/logo.png}" alt="Logo">
+            <img th:src="@{/images/logo.png}" alt="Logo" style="height: 40px; margin-right: 10px;">
             <strong>SkatePro Academy</strong>
         </a>
 
@@ -13,12 +13,42 @@
 
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link active" href="#inicio">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link" href="#valores">Valores</a></li>
-                <li class="nav-item"><a class="nav-link" href="#clases">Clases</a></li>
-                <li class="nav-item"><a class="nav-link" href="#horarios">Horarios</a></li>
-                <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
-                <li class="nav-item"><a class="btn btn-outline-primary ms-2" href="#inscribirse">Inscribirse</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                
+                <!-- DROPDOWN INFORMACIÓN -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navInformacion" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Información
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navInformacion">
+                        <li><a class="dropdown-item" href="/#valores">Valores</a></li>
+                        <li><a class="dropdown-item" href="/#clases">Clases</a></li>
+                        <li><a class="dropdown-item" href="/#horarios">Horarios</a></li>
+                        <li><a class="dropdown-item" href="/#contacto">Contacto</a></li>
+                    </ul>
+                </li>
+
+                <!-- DROPDOWN GESTIÓN -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navGestion" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Gestión
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navGestion">
+                        <li><a class="dropdown-item" href="/users/listar">
+                            <i class="bi bi-people"></i> Usuarios
+                        </a></li>
+                        <li><a class="dropdown-item" href="/clases/listar">
+                            <i class="bi bi-calendar-event"></i> Clases
+                        </a></li>
+                        <li><a class="dropdown-item" href="/instructores/listar">
+                            <i class="bi bi-person-badge"></i> Instructores
+                        </a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary ms-2" href="/users/listar">Inscribirse</a>
+                </li>
             </ul>
         </div>
 
