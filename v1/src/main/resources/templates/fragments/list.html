@@ -3,45 +3,109 @@
 
 <head th:replace="fragments/head :: head"></head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
 <!-- NAVBAR -->
 <header th:replace="fragments/navbar :: navbar"></header>
 
-<main class="container section-padding">
+<main class="container section-padding flex-grow-1">
 
-    <!-- CARRUSEL (HOME) -->
-    <section th:replace="fragments/home :: home" style="margin-top: 10px;"></section>
-
-    <!-- BIENVENIDA -->
-    <section id="bienvenida" class="mt-5 mb-5">
-        <div class="row mb-5">
-            <div class="col-lg-6">
-                <h3>Bienvenido a SkatePro Academy</h3>
-                <p>
-                    Ofrecemos cursos para principiantes, intermedios y avanzados. 
-                    Nuestro objetivo es enseñar técnica, seguridad y disfrutar del deporte en familia.
-                </p>
-                <a id="inscribirse" class="btn btn-primary" href="#contacto">Inscribirme</a>
+    <div class="row mt-4">
+        <div class="col-12">
+            
+            <!-- TÍTULO -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>
+                    <i class="bi bi-people-fill text-primary"></i> 
+                    Lista de Usuarios
+                </h2>
+                <a href="/index/home" class="btn btn-outline-primary">
+                    <i class="bi bi-house"></i> Volver al Inicio
+                </a>
             </div>
 
-            <div class="col-lg-6">
-                <img th:src="@{/images/imagen4.jpg}" class="img-fluid rounded">
+            <!-- ALERTA DE ERROR -->
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill"></i> 
+                <strong>Error:</strong> <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
+
+            <!-- INFORMACIÓN TOTAL -->
+            <div th:if="${total != null}" class="alert alert-info">
+                <i class="bi bi-info-circle-fill"></i> 
+                Total de usuarios registrados: <strong th:text="${total}">0</strong>
+            </div>
+
+            <!-- TARJETA CON TABLA -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-table"></i> Usuarios Registrados
+                    </h5>
+                </div>
+                
+                <div class="card-body">
+                    
+                    <!-- TABLA RESPONSIVE -->
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col" class="text-center">ID</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Teléfono</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- ITERACIÓN DE USUARIOS -->
+                                <tr th:each="user : ${users}">
+                                    <td class="text-center">
+                                        <span class="badge bg-secondary" th:text="${user.id}">1</span>
+                                    </td>
+                                    <td>
+                                        <i class="bi bi-person-circle text-primary"></i>
+                                        <strong th:text="${user.name}">Nombre Usuario</strong>
+                                    </td>
+                                    <td>
+                                        <i class="bi bi-envelope text-info"></i>
+                                        <span th:text="${user.email}">email@ejemplo.com</span>
+                                    </td>
+                                    <td>
+                                        <i class="bi bi-telephone text-success"></i>
+                                        <span th:text="${user.phone != null && !user.phone.isEmpty() ? user.phone : 'No registrado'}" 
+                                              th:class="${user.phone != null && !user.phone.isEmpty() ? '' : 'text-muted'}">
+                                            Teléfono
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- MENSAJE SI NO HAY USUARIOS -->
+                                <tr th:if="${users == null || users.isEmpty()}">
+                                    <td colspan="4" class="text-center text-muted py-5">
+                                        <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+                                        <p class="mt-3 mb-0">No hay usuarios registrados en el sistema</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- INFORMACIÓN ADICIONAL -->
+            <div class="mt-4 p-3 bg-light rounded">
+                <h6><i class="bi bi-lightbulb text-warning"></i> Información</h6>
+                <ul class="mb-0">
+                    <li>Para probar el endpoint REST (JSON): <code>GET http://localhost:8080/users/listar</code></li>
+                    <li>Para ver esta página HTML: <code>GET http://localhost:8080/users/list</code></li>
+                </ul>
+            </div>
+
         </div>
-    </section>
-
-    <!-- VALORES -->
-    <section th:replace="fragments/valores :: valores" style="margin-top: 40px;"></section>
-
-    <!-- CLASES -->
-    <section th:replace="fragments/clases :: clases"></section>
-
-    <!-- HORARIOS -->
-    <section th:replace="fragments/horarios :: horarios"></section>
-
-    <!-- CONTACTO -->
-    <section th:replace="fragments/contacto :: contacto"></section>
+    </div>
 
 </main>
 
