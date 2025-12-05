@@ -1,1 +1,0 @@
-web: bash -lc "cd v1 && java -jar target/*.jar --server.port=$PORT"
