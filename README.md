@@ -1,4 +1,4 @@
-#documentación: http://localhost:8080/swagger-ui.html
+Api documentación: http://localhost:8080/swagger-ui.html
 
 # 🛼 Escuela de Patinaje - Guía del Proyecto (Estructura Adaptada)
 
