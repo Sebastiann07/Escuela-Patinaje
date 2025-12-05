@@ -6,6 +6,9 @@ if [ -d "v1" ]; then
   cd v1
 fi
 
+# Asegura permiso ejecutable en el wrapper (solución temporal)
+chmod +x ./mvnw || true
+
 # Build (usa el wrapper incluido)
 ./mvnw -B package -DskipTests
 
