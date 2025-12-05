@@ -28,9 +28,7 @@ public class instructorController {
     @Autowired
     instructorService instructorService;
 
-    // ===== VISTAS HTML =====
 
-    // Listar todos los instructores
     @GetMapping("/listar")
     public String listarInstructores(Model model) {
         List<instructorModel> instructores = instructorService.getAllInstructores();
@@ -39,7 +37,7 @@ public class instructorController {
         return "instructores/list";
     }
 
-    // Ver detalles de un instructor
+
     @GetMapping("/ver/{id}")
     public String verInstructor(@PathVariable Long id, Model model, RedirectAttributes redirect) {
         Optional<instructorModel> instructor = instructorService.getInstructorById(id);
@@ -53,18 +51,18 @@ public class instructorController {
         }
     }
 
-    // Formulario para crear nuevo instructor
+
     @GetMapping("/crear")
     public String crearInstructorForm(Model model) {
         model.addAttribute("instructor", new instructorModel());
         return "instructores/form";
     }
 
-    // Guardar nuevo instructor
+
     @PostMapping("/guardar")
     public String guardarInstructor(instructorModel instructor, RedirectAttributes redirect) {
         try {
-            // Validar que el email no exista
+       
             if (instructorService.emailExists(instructor.getEmail())) {
                 redirect.addFlashAttribute("error", "El email ya está registrado");
                 return "redirect:/instructores/crear";
@@ -80,7 +78,7 @@ public class instructorController {
         }
     }
 
-    // Formulario para editar instructor
+   
     @GetMapping("/editar/{id}")
     public String editarInstructorForm(@PathVariable Long id, Model model, RedirectAttributes redirect) {
         Optional<instructorModel> instructor = instructorService.getInstructorById(id);
@@ -94,7 +92,6 @@ public class instructorController {
         }
     }
 
-    // Actualizar instructor
     @PostMapping("/actualizar/{id}")
     public String actualizarInstructor(@PathVariable Long id, instructorModel instructorDetails, RedirectAttributes redirect) {
         try {
@@ -114,7 +111,6 @@ public class instructorController {
         }
     }
 
-    // Eliminar instructor
     @PostMapping("/eliminar/{id}")
     public String eliminarInstructor(@PathVariable Long id, RedirectAttributes redirect) {
         try {
@@ -131,7 +127,7 @@ public class instructorController {
         }
     }
 
-    // ===== APIs JSON =====
+
 
     @GetMapping("/api/json")
     @ResponseBody

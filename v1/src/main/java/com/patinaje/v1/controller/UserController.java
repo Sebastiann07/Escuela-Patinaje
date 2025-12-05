@@ -28,9 +28,7 @@ public class UserController {
     @Autowired
     userService userService;
 
-    // ===== VISTAS HTML =====
 
-    // Listar todos los usuarios
     @GetMapping("/listar")
     public String listarHTML(Model model) {
         List<userModel> usuarios = userService.getAllUsers();
@@ -39,7 +37,7 @@ public class UserController {
         return "users/list";
     }
 
-    // Ver detalles de un usuario específico
+ 
     @GetMapping("/ver/{id}")
     public String verUsuario(@PathVariable Long id, Model model, RedirectAttributes redirect) {
         Optional<userModel> usuario = userService.getUserById(id);
@@ -53,18 +51,18 @@ public class UserController {
         }
     }
 
-    // Formulario para crear nuevo usuario
+ 
     @GetMapping("/crear")
     public String crearUsuarioForm(Model model) {
         model.addAttribute("user", new userModel());
         return "users/form";
     }
 
-    // Guardar nuevo usuario
+    
     @PostMapping("/guardar")
     public String guardarUsuario(userModel user, RedirectAttributes redirect) {
         try {
-            // Validar que el email no exista
+          
             if (userService.emailExists(user.getEmail())) {
                 redirect.addFlashAttribute("error", "El email ya está registrado");
                 return "redirect:/users/crear";
@@ -80,7 +78,7 @@ public class UserController {
         }
     }
 
-    // Formulario para editar usuario
+
     @GetMapping("/editar/{id}")
     public String editarUsuarioForm(@PathVariable Long id, Model model, RedirectAttributes redirect) {
         Optional<userModel> usuario = userService.getUserById(id);
@@ -94,7 +92,7 @@ public class UserController {
         }
     }
 
-    // Actualizar usuario existente
+ 
     @PostMapping("/actualizar/{id}")
     public String actualizarUsuario(@PathVariable Long id, userModel userDetails, RedirectAttributes redirect) {
         try {
@@ -103,7 +101,7 @@ public class UserController {
             if (usuario.isPresent()) {
                 userModel existingUser = usuario.get();
                 
-                // Solo actualizar si los campos no están vacíos
+          
                 if (userDetails.getName() != null && !userDetails.getName().trim().isEmpty()) {
                     existingUser.setName(userDetails.getName());
                 }
@@ -148,7 +146,6 @@ public class UserController {
         }
     }
 
-    // ===== APIs JSON (Para Thunder Client) =====
 
     @GetMapping("/api/json")
     @ResponseBody

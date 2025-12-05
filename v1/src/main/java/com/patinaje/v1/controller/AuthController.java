@@ -24,7 +24,7 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // Página de login
+
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
                        @RequestParam(value = "logout", required = false) String logout,
@@ -41,40 +41,40 @@ public class AuthController {
         return "auth/login";
     }
 
-    // Página de registro público
+  
     @GetMapping("/registro")
     public String registroForm(Model model) {
         model.addAttribute("user", new userModel());
         return "auth/registro";
     }
 
-    // Procesar registro
+    
     @PostMapping("/registro")
     public String registrarUsuario(@Valid @ModelAttribute("user") userModel user,
                                    BindingResult result,
                                    RedirectAttributes redirect,
                                    Model model) {
         
-        // Validar errores de formulario
+       
         if (result.hasErrors()) {
             return "auth/registro";
         }
 
-        // Verificar si el email ya existe
+       
         if (userService.emailExists(user.getEmail())) {
             model.addAttribute("error", "El email ya está registrado");
             return "auth/registro";
         }
 
         try {
-            // Encriptar la contraseña
+         
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             
-            // Asignar rol de ALUMNO por defecto
+            
             user.setRol(userModel.Role.ALUMNO);
             user.setActivo(true);
             
-            // Guardar usuario
+          
             userService.createUser(user);
             
             redirect.addFlashAttribute("success", "Registro exitoso. Por favor inicia sesión.");
@@ -86,7 +86,7 @@ public class AuthController {
         }
     }
 
-    // Dashboard después del login
+   
     @GetMapping("/dashboard")
     public String dashboard() {
         return "auth/dashboard";
