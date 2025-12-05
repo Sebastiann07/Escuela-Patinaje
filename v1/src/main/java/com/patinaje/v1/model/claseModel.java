@@ -38,11 +38,11 @@ public class claseModel {
     @NotBlank(message = "El día es obligatorio")
     String dia;  // Lunes, Martes, Miércoles, etc.
 
-    @Column(name = "hora_inicio", nullable = false, length = 10)
+    @Column(name = "hora_inicio", nullable = false, length = 20)
     @NotBlank(message = "La hora de inicio es obligatoria")
     String horaInicio;  // HH:mm
 
-    @Column(name = "hora_fin", nullable = false, length = 10)
+    @Column(name = "hora_fin", nullable = false, length = 20)
     @NotBlank(message = "La hora de fin es obligatoria")
     String horaFin;  // HH:mm
 
