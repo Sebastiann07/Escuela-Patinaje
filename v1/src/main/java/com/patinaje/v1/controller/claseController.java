@@ -2,11 +2,7 @@ package com.patinaje.v1.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -28,10 +24,10 @@ import java.util.Optional;
 public class claseController {
 
     @Autowired
-    claseService claseService;
+    private claseService claseService;
 
     @Autowired
-    instructorService instructorService;
+    private instructorService instructorService;
 
     // ===== VISTAS HTML =====
 
@@ -72,12 +68,26 @@ public class claseController {
 
     // Guardar nueva clase
     @PostMapping("/guardar")
-    public String guardarClase(claseModel clase, RedirectAttributes redirect) {
+    public String guardarClase(@ModelAttribute claseModel clase, RedirectAttributes redirect) {
         try {
+            // Validación básica
+            if (clase.getNombre() == null || clase.getNombre().trim().isEmpty()) {
+                redirect.addFlashAttribute("error", "El nombre de la clase es obligatorio");
+                return "redirect:/clases/crear";
+            }
+            
+            if (clase.getCapacidad() == null || clase.getCapacidad() < 1) {
+                redirect.addFlashAttribute("error", "La capacidad debe ser mayor a 0");
+                return "redirect:/clases/crear";
+            }
+            
             claseService.createClase(clase);
             redirect.addFlashAttribute("success", "Clase creada exitosamente");
             return "redirect:/clases/listar";
             
+        } catch (IllegalArgumentException e) {
+            redirect.addFlashAttribute("error", e.getMessage());
+            return "redirect:/clases/crear";
         } catch (Exception e) {
             redirect.addFlashAttribute("error", "Error al crear la clase: " + e.getMessage());
             return "redirect:/clases/crear";
@@ -102,7 +112,7 @@ public class claseController {
 
     // Actualizar clase
     @PostMapping("/actualizar/{id}")
-    public String actualizarClase(@PathVariable Long id, claseModel claseDetails, RedirectAttributes redirect) {
+    public String actualizarClase(@PathVariable Long id, @ModelAttribute claseModel claseDetails, RedirectAttributes redirect) {
         try {
             claseModel claseActualizada = claseService.updateClase(id, claseDetails);
             
@@ -114,6 +124,9 @@ public class claseController {
                 return "redirect:/clases/listar";
             }
             
+        } catch (IllegalArgumentException e) {
+            redirect.addFlashAttribute("error", e.getMessage());
+            return "redirect:/clases/editar/" + id;
         } catch (Exception e) {
             redirect.addFlashAttribute("error", "Error al actualizar: " + e.getMessage());
             return "redirect:/clases/editar/" + id;
@@ -131,6 +144,9 @@ public class claseController {
             }
             return "redirect:/clases/listar";
             
+        } catch (IllegalStateException e) {
+            redirect.addFlashAttribute("error", e.getMessage());
+            return "redirect:/clases/listar";
         } catch (Exception e) {
             redirect.addFlashAttribute("error", "Error al eliminar: " + e.getMessage());
             return "redirect:/clases/listar";
