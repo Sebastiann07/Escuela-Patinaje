@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Controller
+@Tag(name = "Auth", description = "Operaciones de autenticación y registro")
 public class AuthController {
 
     @Autowired

@@ -30,6 +30,16 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // Rutas públicas (sin autenticación)
                 .requestMatchers("/", "/index/**", "/registro", "/login", "/css/**", "/js/**", "/images/**").permitAll()
+                // Rutas OpenAPI / Swagger (permitir acceso público)
+                .requestMatchers(
+                    "/swagger-ui.html",
+                    "/swagger-ui/**",
+                    "/v3/api-docs",
+                    "/v3/api-docs/**",
+                    "/v3/api-docs.yaml",
+                    "/webjars/**",
+                    "/swagger-resources/**"
+                ).permitAll()
                 
                 // Rutas solo para ADMIN
                 .requestMatchers("/users/**").hasAuthority("ADMIN")

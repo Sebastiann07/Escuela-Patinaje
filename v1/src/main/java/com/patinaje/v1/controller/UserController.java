@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import com.patinaje.v1.service.userService;
 import com.patinaje.v1.model.userModel;
@@ -23,6 +27,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/users")
+@Tag(name = "Users", description = "Operaciones relacionadas con usuarios")
 public class UserController {
 
     @Autowired
@@ -149,6 +154,11 @@ public class UserController {
 
     @GetMapping("/api/json")
     @ResponseBody
+    @Operation(summary = "Listar usuarios (JSON)", description = "Devuelve la lista de usuarios en formato JSON")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida correctamente"),
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     public ResponseEntity<Map<String, Object>> listarJSON() {
         Map<String, Object> response = new HashMap<>();
         
@@ -176,6 +186,11 @@ public class UserController {
 
     @GetMapping("/api/json/{id}")
     @ResponseBody
+    @Operation(summary = "Obtener usuario por ID (JSON)", description = "Devuelve un usuario por su id en formato JSON")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Usuario encontrado"),
+        @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
     public ResponseEntity<Map<String, Object>> obtenerUsuarioJSON(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         

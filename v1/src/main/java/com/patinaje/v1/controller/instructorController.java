@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import com.patinaje.v1.service.instructorService;
 import com.patinaje.v1.model.instructorModel;
@@ -23,6 +27,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/instructores")
+@Tag(name = "Instructores", description = "Operaciones sobre instructores")
 public class instructorController {
 
     @Autowired
@@ -131,6 +136,11 @@ public class instructorController {
 
     @GetMapping("/api/json")
     @ResponseBody
+    @Operation(summary = "Listar instructores (JSON)", description = "Devuelve la lista de instructores en JSON")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Listado obtenido"),
+        @ApiResponse(responseCode = "500", description = "Error interno")
+    })
     public ResponseEntity<Map<String, Object>> listarInstructoresJSON() {
         Map<String, Object> response = new HashMap<>();
         
@@ -157,6 +167,11 @@ public class instructorController {
 
     @GetMapping("/api/json/{id}")
     @ResponseBody
+    @Operation(summary = "Obtener instructor por ID (JSON)", description = "Devuelve un instructor por su id en JSON")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Instructor encontrado"),
+        @ApiResponse(responseCode = "404", description = "Instructor no encontrado")
+    })
     public ResponseEntity<Map<String, Object>> obtenerInstructorJSON(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         

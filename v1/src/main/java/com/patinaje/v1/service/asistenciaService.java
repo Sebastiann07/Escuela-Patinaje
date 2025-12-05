@@ -20,6 +20,10 @@ public class asistenciaService {
         repository.save(asistencia);
     }
 
+    public List<asistenciaModel> getAll() {
+        return repository.findAll();
+    }
+
     public List<asistenciaModel> obtenerPorAlumno(userModel alumno) {
         return repository.findByAlumno(alumno);
     }

@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import com.patinaje.v1.service.claseService;
 import com.patinaje.v1.service.instructorService;
@@ -21,6 +25,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/clases")
+@Tag(name = "Clases", description = "Operaciones sobre las clases")
 public class claseController {
 
     @Autowired
@@ -157,6 +162,11 @@ public class claseController {
 
     @GetMapping("/api/json")
     @ResponseBody
+    @Operation(summary = "Listar clases (JSON)", description = "Devuelve todas las clases en formato JSON")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de clases"),
+        @ApiResponse(responseCode = "500", description = "Error interno")
+    })
     public ResponseEntity<Map<String, Object>> listarClasesJSON() {
         Map<String, Object> response = new HashMap<>();
         
@@ -183,6 +193,11 @@ public class claseController {
 
     @GetMapping("/api/json/{id}")
     @ResponseBody
+    @Operation(summary = "Obtener clase por ID (JSON)", description = "Devuelve una clase por su id en formato JSON")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Clase encontrada"),
+        @ApiResponse(responseCode = "404", description = "Clase no encontrada")
+    })
     public ResponseEntity<Map<String, Object>> obtenerClaseJSON(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         

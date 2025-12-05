@@ -7,12 +7,14 @@ import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Table(name = "tbl_clases")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(name = "Clase", description = "Representa una clase ofrecida por la escuela")
 public class claseModel {
 
     @Id
@@ -56,5 +58,6 @@ public class claseModel {
     // Relación con instructor
     @ManyToOne
     @JoinColumn(name = "instructor_id")
+    @Schema(description = "Instructor asignado a la clase")
     private instructorModel instructor;
 }

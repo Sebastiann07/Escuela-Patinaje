@@ -5,11 +5,13 @@ import com.patinaje.v1.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
 @Controller
 @RequestMapping("/asistencia")
+@Tag(name = "Asistencia", description = "Operaciones de asistencia a clases")
 public class asistenciaController {
 
     private final claseService claseService;
