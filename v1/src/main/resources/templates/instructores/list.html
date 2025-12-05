@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body class="d-flex flex-column" style="min-height: 100vh;">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img th:src="@{/images/logo.png}" alt="Logo" style="height: 40px; margin-right: 10px;">
+        <strong>SkatePro Academy</strong>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+          
+          <!-- DROPDOWN INFORMACIÓN -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navInformacion" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Información
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navInformacion">
+              <li><a class="dropdown-item" href="/#valores">Valores</a></li>
+              <li><a class="dropdown-item" href="/#clases">Clases</a></li>
+              <li><a class="dropdown-item" href="/#horarios">Horarios</a></li>
+              <li><a class="dropdown-item" href="/#contacto">Contacto</a></li>
+            </ul>
+          </li>
+
+          <!-- DROPDOWN GESTIÓN -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navGestion" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Gestión
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navGestion">
+              <li><a class="dropdown-item" href="/users/listar">
+                <i class="bi bi-people"></i> Usuarios
+              </a></li>
+              <li><a class="dropdown-item" href="/clases/listar">
+                <i class="bi bi-calendar-event"></i> Clases
+              </a></li>
+              <li><a class="dropdown-item active" href="/instructores/listar">
+                <i class="bi bi-person-badge"></i> Instructores
+              </a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container mt-5 flex-grow-1">
+    
+    <div class="row mb-4">
+      <div class="col-md-8">
+        <h1 class="mb-0">
+          <i class="bi bi-person-badge" style="color: #19C5C2;"></i>
+          Gestión de Instructores
+        </h1>
+      </div>
+      <div class="col-md-4 text-end">
+        <a th:href="@{/instructores/crear}" class="btn btn-success me-2">
+          <i class="bi bi-plus-circle"></i> Nuevo Instructor
+        </a>
+        <span class="badge bg-primary" style="font-size: 1rem;">
+          Total: <span th:text="${total}">0</span> instructores
+        </span>
+      </div>
+    </div>
+
+    <!-- Mensajes -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+      <i class="bi bi-check-circle"></i> <span th:text="${success}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <i class="bi bi-exclamation-circle"></i> <span th:text="${error}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <hr>
+
+    <!-- TABLA DE INSTRUCTORES -->
+    <div class="table-responsive">
+      <table class="table table-hover table-striped align-middle">
+        <thead class="table-primary">
+          <tr>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Email</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Experiencia</th>
+            <th scope="col" class="text-center">Estado</th>
+            <th scope="col" class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="instructor, stat : ${instructores}">
+            <td class="text-center text-muted">
+              <strong th:text="${stat.count}">1</strong>
+            </td>
+            <td>
+              <strong th:text="${instructor.nombre}">Nombre Instructor</strong>
+            </td>
+            <td>
+              <i class="bi bi-envelope"></i>
+              <span th:text="${instructor.email}">email@ejemplo.com</span>
+            </td>
+            <td>
+              <i class="bi bi-telephone"></i>
+              <span th:text="${instructor.telefono != null ? instructor.telefono : 'N/A'}">N/A</span>
+            </td>
+            <td>
+              <span th:if="${instructor.especialidad != null}" th:text="${instructor.especialidad}" class="badge bg-info">Especialidad</span>
+              <span th:unless="${instructor.especialidad != null}" class="text-muted">-</span>
+            </td>
+            <td>
+              <span th:if="${instructor.experiencia != null}" th:text="${instructor.experiencia}">-</span>
+              <span th:unless="${instructor.experiencia != null}" class="text-muted">-</span>
+            </td>
+            <td class="text-center">
+              <span th:if="${instructor.estado == 'Activo'}" class="badge bg-success">Activo</span>
+              <span th:unless="${instructor.estado == 'Activo'}" class="badge bg-secondary">Inactivo</span>
+            </td>
+            <td class="text-center">
+              <a th:href="@{/instructores/ver/{id}(id=${instructor.id})}" class="btn btn-sm btn-info" title="Ver">
+                <i class="bi bi-eye"></i>
+              </a>
+              <a th:href="@{/instructores/editar/{id}(id=${instructor.id})}" class="btn btn-sm btn-warning" title="Editar">
+                <i class="bi bi-pencil"></i>
+              </a>
+              <form th:action="@{/instructores/eliminar/{id}(id=${instructor.id})}" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro?');">
+                <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MENSAJE CUANDO NO HAY INSTRUCTORES -->
+    <div th:if="${#lists.isEmpty(instructores)}" class="alert alert-info d-flex align-items-center mt-4" role="alert">
+      <i class="bi bi-info-circle me-3" style="font-size: 1.5rem;"></i>
+      <div>
+        <strong>Sin instructores registrados</strong> — No hay datos disponibles.
+      </div>
+    </div>
+
+    <!-- ESTADÍSTICAS -->
+    <div th:if="${!#lists.isEmpty(instructores)}" class="row mt-5">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title text-muted">Total de Instructores</h5>
+            <h2 style="color: #19C5C2;" th:text="${total}">0</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title text-muted">Instructores Activos</h5>
+            <h2 style="color: #19C5C2;" th:text="${#lists.size(instructores.?[estado == 'Activo'])}">0</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title text-muted">Estado del Sistema</h5>
+            <span class="badge bg-success">Activo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GALERÍA DE IMÁGENES DESTACADA -->
+    <div class="row mt-5 mb-5">
+      <h3 class="mb-4" style="color: #19C5C2;">
+        <i class="bi bi-award"></i> Nuestros Expertos Instructores
+      </h3>
+      
+      <div class="col-md-6 mb-4">
+        <div class="card border-0 overflow-hidden" style="background: linear-gradient(135deg, #19C5C2 0%, #0fa89d 100%); box-shadow: 0 10px 30px rgba(25, 197, 194, 0.3);">
+          <img th:src="@{/images/imagen7.png}" class="card-img" style="height: 380px; object-fit: cover; opacity: 0.8;" alt="Instructor Profesional">
+          <div class="card-img-overlay d-flex flex-column justify-content-end">
+            <div class="card-body text-white">
+              <h4 class="card-title"><i class="bi bi-person-badge-fill"></i> Instructores Certificados</h4>
+              <p class="card-text">Profesionales con años de experiencia en patinaje artístico, velocidad y freestyle. Dedicados a formar nuevas generaciones de patinadores.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-4">
+        <div class="card border-0 overflow-hidden" style="background: linear-gradient(135deg, #0fa89d 0%, #19C5C2 100%); box-shadow: 0 10px 30px rgba(25, 197, 194, 0.3);">
+          <img th:src="@{/images/imagen8.png}" class="card-img" style="height: 380px; object-fit: cover; opacity: 0.8;" alt="Entrenamiento Especializado">
+          <div class="card-img-overlay d-flex flex-column justify-content-end">
+            <div class="card-body text-white">
+              <h4 class="card-title"><i class="bi bi-book-half"></i> Metodología de Enseñanza</h4>
+              <p class="card-text">Programas personalizados para cada nivel. Desde principiantes hasta atletas de competencia, adaptamos el entrenamiento a tus necesidades.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer th:replace="fragments/footer :: footer"></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

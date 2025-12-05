@@ -1,0 +1,80 @@
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-primary"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div class="container">
+
+        <!-- LOGO + TITULO -->
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img th:src="@{/images/logo.png}" alt="Logo">
+            <strong>SkatePro Academy</strong>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link active" href="/#inicio">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#valores">Valores</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#clases">Clases</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#horarios">Horarios</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#contacto">Contacto</a></li>
+                
+                <!-- Mostrar solo si NO está autenticado -->
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="btn btn-outline-light ms-2" href="/registro">
+                        <i class="bi bi-person-plus"></i> Inscribirse
+                    </a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="btn btn-outline-light ms-2" href="/login">
+                        <i class="bi bi-box-arrow-in-right"></i> Ingresar
+                    </a>
+                </li>
+
+                <!-- Mostrar solo si está autenticado -->
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle"></i> 
+                        <span sec:authentication="name"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item disabled">
+                                <small class="text-muted">Rol: <span sec:authentication="authorities"></span></small>
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        
+                        <!-- Solo para ADMIN -->
+                        <li sec:authorize="hasAuthority('ADMIN')">
+                            <a class="dropdown-item" href="/users/listar">
+                                <i class="bi bi-people"></i> Gestión de Usuarios
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a class="dropdown-item" href="/dashboard">
+                                <i class="bi bi-speedometer2"></i> Mi Panel
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-person"></i> Mi Perfil
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post" style="display: inline;">
+                                <button type="submit" class="dropdown-item text-danger" style="border: none; background: none; width: 100%; text-align: left;">
+                                    <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>

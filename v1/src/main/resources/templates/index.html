@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+
+<!-- NAVBAR -->
+<header th:replace="fragments/navbar :: navbar"></header>
+
+<main class="container section-padding">
+
+    <!-- CARRUSEL (HOME) -->
+    <section th:replace="fragments/home :: home" style="margin-top: 10px;"></section>
+
+    <!-- BIENVENIDA -->
+    <section id="bienvenida" class="mt-5 mb-5">
+        <div class="row mb-5">
+            <div class="col-lg-6">
+                <h3>Bienvenido a SkatePro Academy</h3>
+                <p>
+                    Ofrecemos cursos para principiantes, intermedios y avanzados. 
+                    Nuestro objetivo es enseñar técnica, seguridad y disfrutar del deporte en familia.
+                </p>
+                
+                <!-- Botón que cambia según el estado de autenticación -->
+                <div sec:authorize="!isAuthenticated()">
+                    <a id="inscribirse" class="btn btn-primary" href="/registro">Inscribirme</a>
+                </div>
+                <div sec:authorize="isAuthenticated()">
+                    <a class="btn btn-success" href="/dashboard">
+                        <i class="bi bi-speedometer2"></i> Ir a mi panel
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <img th:src="@{/images/imagen4.jpg}" class="img-fluid rounded">
+            </div>
+        </div>
+    </section>
+
+    <!-- VALORES -->
+    <section th:replace="fragments/valores :: valores" style="margin-top: 40px;"></section>
+
+    <!-- CLASES -->
+    <section th:replace="fragments/clases :: clases"></section>
+
+    <!-- HORARIOS -->
+    <section th:replace="fragments/horarios :: horarios"></section>
+
+    <!-- CONTACTO -->
+    <section th:replace="fragments/contacto :: contacto"></section>
+
+</main>
+
+<!-- FOOTER -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

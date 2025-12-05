@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body class="d-flex flex-column" style="min-height: 100vh;">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img th:src="@{/images/logo.png}" alt="Logo" style="height: 40px; margin-right: 10px;">
+        <strong>SkatePro Academy</strong>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+          
+          <!-- DROPDOWN INFORMACIÓN -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navInformacion" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Información
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navInformacion">
+              <li><a class="dropdown-item" href="/#valores">Valores</a></li>
+              <li><a class="dropdown-item" href="/#clases">Clases</a></li>
+              <li><a class="dropdown-item" href="/#horarios">Horarios</a></li>
+              <li><a class="dropdown-item" href="/#contacto">Contacto</a></li>
+            </ul>
+          </li>
+
+          <!-- DROPDOWN GESTIÓN -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navGestion" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Gestión
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navGestion">
+              <li><a class="dropdown-item" href="/users/listar">
+                <i class="bi bi-people"></i> Usuarios
+              </a></li>
+              <li><a class="dropdown-item active" href="/clases/listar">
+                <i class="bi bi-calendar-event"></i> Clases
+              </a></li>
+              <li><a class="dropdown-item" href="/instructores/listar">
+                <i class="bi bi-person-badge"></i> Instructores
+              </a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container mt-5 flex-grow-1">
+    
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        
+        <h1 class="mb-4" th:if="${clase.id == null || clase.id == 0}">
+          <i class="bi bi-calendar-plus" style="color: #19C5C2;"></i>
+          Crear Nueva Clase
+        </h1>
+        <h1 class="mb-4" th:unless="${clase.id == null || clase.id == 0}">
+          <i class="bi bi-pencil" style="color: #19C5C2;"></i>
+          Editar Clase
+        </h1>
+
+        <!-- Mensajes -->
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="bi bi-exclamation-circle"></i> <strong>Error:</strong> <span th:text="${error}"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <!-- FORMULARIO CREAR -->
+        <form th:if="${clase.id == null || clase.id == 0}" th:action="@{/clases/guardar}" method="post" class="needs-validation" novalidate>
+          
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre de la Clase <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Mini Patinaje" required>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="nivel" class="form-label">Nivel <span class="text-danger">*</span></label>
+              <select class="form-select" id="nivel" name="nivel" required>
+                <option value="">Seleccionar nivel</option>
+                <option value="Mini">Mini (4-7 años)</option>
+                <option value="Júnior">Júnior (8-12 años)</option>
+                <option value="Adolescentes">Adolescentes (13-17 años)</option>
+                <option value="Adultos">Adultos</option>
+                <option value="Principiantes">Principiantes</option>
+                <option value="Intermedio">Intermedio</option>
+                <option value="Avanzado">Avanzado</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="dia" class="form-label">Día <span class="text-danger">*</span></label>
+              <select class="form-select" id="dia" name="dia" required>
+                <option value="">Seleccionar día</option>
+                <option value="Lunes">Lunes</option>
+                <option value="Martes">Martes</option>
+                <option value="Miércoles">Miércoles</option>
+                <option value="Jueves">Jueves</option>
+                <option value="Viernes">Viernes</option>
+                <option value="Sábado">Sábado</option>
+                <option value="Domingo">Domingo</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="horaInicio" class="form-label">Hora Inicio <span class="text-danger">*</span></label>
+              <input type="time" class="form-control" id="horaInicio" name="horaInicio" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="horaFin" class="form-label">Hora Fin <span class="text-danger">*</span></label>
+              <input type="time" class="form-control" id="horaFin" name="horaFin" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="capacidad" class="form-label">Capacidad <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" id="capacidad" name="capacidad" placeholder="20" min="1" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="instructor_id" class="form-label">Instructor (Opcional)</label>
+              <select class="form-select" id="instructor_id" name="instructor.id">
+                <option value="">Sin asignar</option>
+                <option th:each="inst : ${instructores}" th:value="${inst.id}" th:text="${inst.nombre}">Instructor</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción (Opcional)</label>
+            <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Describe la clase..."></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <select class="form-select" id="estado" name="estado">
+              <option value="Activa">Activa</option>
+              <option value="Inactiva">Inactiva</option>
+              <option value="Pausada">Pausada</option>
+            </select>
+          </div>
+
+          <hr>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a th:href="@{/clases/listar}" class="btn btn-secondary">
+              <i class="bi bi-x-circle"></i> Cancelar
+            </a>
+            <button type="submit" class="btn btn-success">
+              <i class="bi bi-check-circle"></i> Crear Clase
+            </button>
+          </div>
+        </form>
+
+        <!-- FORMULARIO EDITAR -->
+        <form th:unless="${clase.id == null || clase.id == 0}" th:action="@{/clases/actualizar/{id}(id=${clase.id})}" method="post" class="needs-validation" novalidate>
+          
+          <div class="alert alert-info mb-4">
+            <i class="bi bi-info-circle"></i> Editando clase ID: <strong th:text="${clase.id}"></strong>
+          </div>
+
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre de la Clase <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="nombre" name="nombre" th:value="${clase.nombre}" required>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="nivel" class="form-label">Nivel <span class="text-danger">*</span></label>
+              <select class="form-select" id="nivel" name="nivel" required>
+                <option th:selected="${clase.nivel == 'Mini'}" value="Mini">Mini (4-7 años)</option>
+                <option th:selected="${clase.nivel == 'Júnior'}" value="Júnior">Júnior (8-12 años)</option>
+                <option th:selected="${clase.nivel == 'Adolescentes'}" value="Adolescentes">Adolescentes (13-17 años)</option>
+                <option th:selected="${clase.nivel == 'Adultos'}" value="Adultos">Adultos</option>
+                <option th:selected="${clase.nivel == 'Principiantes'}" value="Principiantes">Principiantes</option>
+                <option th:selected="${clase.nivel == 'Intermedio'}" value="Intermedio">Intermedio</option>
+                <option th:selected="${clase.nivel == 'Avanzado'}" value="Avanzado">Avanzado</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="dia" class="form-label">Día <span class="text-danger">*</span></label>
+              <select class="form-select" id="dia" name="dia" required>
+                <option th:selected="${clase.dia == 'Lunes'}" value="Lunes">Lunes</option>
+                <option th:selected="${clase.dia == 'Martes'}" value="Martes">Martes</option>
+                <option th:selected="${clase.dia == 'Miércoles'}" value="Miércoles">Miércoles</option>
+                <option th:selected="${clase.dia == 'Jueves'}" value="Jueves">Jueves</option>
+                <option th:selected="${clase.dia == 'Viernes'}" value="Viernes">Viernes</option>
+                <option th:selected="${clase.dia == 'Sábado'}" value="Sábado">Sábado</option>
+                <option th:selected="${clase.dia == 'Domingo'}" value="Domingo">Domingo</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="horaInicio" class="form-label">Hora Inicio <span class="text-danger">*</span></label>
+              <input type="time" class="form-control" id="horaInicio" name="horaInicio" th:value="${clase.horaInicio}" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="horaFin" class="form-label">Hora Fin <span class="text-danger">*</span></label>
+              <input type="time" class="form-control" id="horaFin" name="horaFin" th:value="${clase.horaFin}" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="capacidad" class="form-label">Capacidad <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" id="capacidad" name="capacidad" th:value="${clase.capacidad}" min="1" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="instructor_id" class="form-label">Instructor</label>
+              <select class="form-select" id="instructor_id" name="instructor.id">
+                <option value="">Sin asignar</option>
+                <option th:each="inst : ${instructores}" th:value="${inst.id}" th:selected="${clase.instructor != null and clase.instructor.id == inst.id}" th:text="${inst.nombre}">Instructor</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea class="form-control" id="descripcion" name="descripcion" rows="3" th:text="${clase.descripcion}"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <select class="form-select" id="estado" name="estado">
+              <option th:selected="${clase.estado == 'Activa'}" value="Activa">Activa</option>
+              <option th:selected="${clase.estado == 'Inactiva'}" value="Inactiva">Inactiva</option>
+              <option th:selected="${clase.estado == 'Pausada'}" value="Pausada">Pausada</option>
+            </select>
+          </div>
+
+          <hr>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a th:href="@{/clases/listar}" class="btn btn-secondary">
+              <i class="bi bi-x-circle"></i> Cancelar
+            </a>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check-circle"></i> Actualizar Clase
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer th:replace="fragments/footer :: footer"></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    (function () {
+      'use strict'
+      const forms = document.querySelectorAll('.needs-validation')
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body class="d-flex flex-column" style="min-height: 100vh;">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img th:src="@{/images/logo.png}" alt="Logo" style="height: 40px; margin-right: 10px;">
+        <strong>SkatePro Academy</strong>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+          
+          <!-- DROPDOWN INFORMACIÓN -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navInformacion" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Información
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navInformacion">
+              <li><a class="dropdown-item" href="/#valores">Valores</a></li>
+              <li><a class="dropdown-item" href="/#clases">Clases</a></li>
+              <li><a class="dropdown-item" href="/#horarios">Horarios</a></li>
+              <li><a class="dropdown-item" href="/#contacto">Contacto</a></li>
+            </ul>
+          </li>
+
+          <!-- DROPDOWN GESTIÓN -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navGestion" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Gestión
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navGestion">
+              <li><a class="dropdown-item" href="/users/listar">
+                <i class="bi bi-people"></i> Usuarios
+              </a></li>
+              <li><a class="dropdown-item active" href="/clases/listar">
+                <i class="bi bi-calendar-event"></i> Clases
+              </a></li>
+              <li><a class="dropdown-item" href="/instructores/listar">
+                <i class="bi bi-person-badge"></i> Instructores
+              </a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container mt-5 flex-grow-1">
+    
+    <div class="row mb-4">
+      <div class="col-md-8">
+        <h1 class="mb-0">
+          <i class="bi bi-calendar-event" style="color: #19C5C2;"></i>
+          Gestión de Clases
+        </h1>
+      </div>
+      <div class="col-md-4 text-end">
+        <a th:href="@{/clases/crear}" class="btn btn-success me-2">
+          <i class="bi bi-plus-circle"></i> Nueva Clase
+        </a>
+        <span class="badge bg-primary" style="font-size: 1rem;">
+          Total: <span th:text="${total}">0</span> clases
+        </span>
+      </div>
+    </div>
+
+    <!-- Mensajes -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+      <i class="bi bi-check-circle"></i> <span th:text="${success}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <i class="bi bi-exclamation-circle"></i> <span th:text="${error}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <hr>
+
+    <!-- TABLA DE CLASES -->
+    <div class="table-responsive">
+      <table class="table table-hover table-striped align-middle">
+        <thead class="table-primary">
+          <tr>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Nivel</th>
+            <th scope="col">Día/Hora</th>
+            <th scope="col">Instructor</th>
+            <th scope="col" class="text-center">Inscritos/Capacidad</th>
+            <th scope="col" class="text-center">Estado</th>
+            <th scope="col" class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="clase, stat : ${clases}">
+            <td class="text-center text-muted">
+              <strong th:text="${stat.count}">1</strong>
+            </td>
+            <td>
+              <strong th:text="${clase.nombre}">Clase</strong>
+            </td>
+            <td>
+              <span class="badge bg-info" th:text="${clase.nivel}">Nivel</span>
+            </td>
+            <td>
+              <i class="bi bi-calendar3"></i>
+              <span th:text="${clase.dia} + ' ' + ${clase.horaInicio} + '-' + ${clase.horaFin}">Lunes 16:00-17:00</span>
+            </td>
+            <td>
+              <span th:if="${clase.instructor != null}" th:text="${clase.instructor.nombre}">Sin instructor</span>
+              <span th:unless="${clase.instructor != null}" class="text-muted">Sin instructor</span>
+            </td>
+            <td class="text-center">
+              <span th:text="${clase.inscritos} + '/' + ${clase.capacidad}">0/20</span>
+              <div class="progress" style="height: 5px; margin-top: 5px;">
+                <div class="progress-bar" th:attr="style='width: ' + ${(clase.inscritos / clase.capacidad) * 100} + '%'"></div>
+              </div>
+            </td>
+            <td class="text-center">
+              <span th:if="${clase.estado == 'Activa'}" class="badge bg-success" th:text="${clase.estado}">Activa</span>
+              <span th:if="${clase.estado == 'Inactiva'}" class="badge bg-secondary" th:text="${clase.estado}">Inactiva</span>
+              <span th:if="${clase.estado == 'Pausada'}" class="badge bg-warning" th:text="${clase.estado}">Pausada</span>
+            </td>
+            <td class="text-center">
+              <a th:href="@{/clases/ver/{id}(id=${clase.id})}" class="btn btn-sm btn-info" title="Ver">
+                <i class="bi bi-eye"></i>
+              </a>
+              <a th:href="@{/clases/editar/{id}(id=${clase.id})}" class="btn btn-sm btn-warning" title="Editar">
+                <i class="bi bi-pencil"></i>
+              </a>
+              <form th:action="@{/clases/eliminar/{id}(id=${clase.id})}" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro?');">
+                <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MENSAJE CUANDO NO HAY CLASES -->
+    <div th:if="${#lists.isEmpty(clases)}" class="alert alert-info d-flex align-items-center mt-4" role="alert">
+      <i class="bi bi-info-circle me-3" style="font-size: 1.5rem;"></i>
+      <div>
+        <strong>Sin clases registradas</strong> — No hay datos disponibles.
+      </div>
+    </div>
+
+    <!-- ESTADÍSTICAS -->
+    <div th:if="${!#lists.isEmpty(clases)}" class="row mt-5">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title text-muted">Total de Clases</h5>
+            <h2 style="color: #19C5C2;" th:text="${total}">0</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title text-muted">Instructores Activos</h5>
+            <h2 style="color: #19C5C2;" th:text="${instructores.size()}">0</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title text-muted">Estado</h5>
+            <span class="badge bg-success">Activo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GALERÍA DE IMÁGENES LLAMATIVA -->
+    <div class="row mt-5 mb-5">
+      <h3 class="mb-4" style="color: #19C5C2;">
+        <i class="bi bi-images"></i> Momentos de Nuestras Clases
+      </h3>
+      
+      <div class="col-md-6 mb-4">
+        <div class="card border-0 shadow-lg overflow-hidden" style="transition: all 0.3s ease;">
+          <div class="position-relative">
+            <img th:src="@{/images/imagen5.png}" class="card-img-top" style="height: 350px; object-fit: cover;" alt="Clase de Patinaje">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(25, 197, 194, 0.7) 0%, rgba(25, 197, 194, 0) 100%);"></div>
+            <div class="position-absolute bottom-0 start-0 p-3">
+              <h5 class="text-white mb-0">Técnica y Seguridad</h5>
+              <p class="text-white-50 small">Formación especializada</p>
+            </div>
+          </div>
+          <div class="card-body bg-light">
+            <p class="card-text text-muted">Nuestros instructores certificados enseñan las mejores técnicas de patinaje con énfasis en la seguridad de todos nuestros alumnos.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-4">
+        <div class="card border-0 shadow-lg overflow-hidden" style="transition: all 0.3s ease;">
+          <div class="position-relative">
+            <img th:src="@{/images/imagen6.jpeg}" class="card-img-top" style="height: 350px; object-fit: cover;" alt="Competencia de Patinaje">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(25, 197, 194, 0.7) 0%, rgba(25, 197, 194, 0) 100%);"></div>
+            <div class="position-absolute bottom-0 start-0 p-3">
+              <h5 class="text-white mb-0">Eventos y Competencias</h5>
+              <p class="text-white-50 small">Alcanza tus metas</p>
+            </div>
+          </div>
+          <div class="card-body bg-light">
+            <p class="card-text text-muted">Participamos en competencias locales y nacionales. Nuestros alumnos demuestran su talento en eventos deportivos de patinaje.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer th:replace="fragments/footer :: footer"></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
