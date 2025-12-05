@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación - SkatePro Academy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <style>
+        :root {
+            --color-principal: #19C5C2;
+            --color-secundario: #0fa89d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--color-principal) 0%, var(--color-secundario) 100%);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            color: var(--color-principal);
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--color-principal);
+        }
+
+        .card-doc {
+            border: none;
+            border-left: 4px solid var(--color-principal);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-doc:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(25, 197, 194, 0.3);
+        }
+
+        .tech-badge {
+            background-color: #f8f9fa;
+            border: 2px solid var(--color-principal);
+            color: var(--color-principal);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 0.3rem;
+            font-weight: 600;
+        }
+
+        .code-block {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .sidebar a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem 1rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .sidebar a:hover {
+            background-color: #f8f9fa;
+            border-left-color: var(--color-principal);
+            color: var(--color-principal);
+        }
+
+        .table-custom {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .table-custom thead {
+            background-color: var(--color-principal);
+            color: white;
+        }
+
+        .icon-feature {
+            font-size: 2.5rem;
+            color: var(--color-principal);
+        }
+
+        footer {
+            background: var(--color-principal);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-3">
+                        <i class="bi bi-book"></i> Documentación Técnica
+                    </h1>
+                    <p class="lead">Sistema de Gestión para Escuela de Patinaje - SkatePro Academy</p>
+                    <p class="mb-0">Versión 1.0 | Spring Boot + Thymeleaf + MySQL</p>
+                </div>
+                <div class="col-lg-4 text-end">
+                    <i class="bi bi-code-slash" style="font-size: 8rem; opacity: 0.2;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            
+            <!-- Sidebar Navigation -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h5 class="fw-bold mb-3">Contenido</h5>
+                    <a href="#descripcion"><i class="bi bi-info-circle me-2"></i> Descripción</a>
+                    <a href="#tecnologias"><i class="bi bi-stack me-2"></i> Tecnologías</a>
+                    <a href="#estructura"><i class="bi bi-folder me-2"></i> Estructura</a>
+                    <a href="#instalacion"><i class="bi bi-download me-2"></i> Instalación</a>
+                    <a href="#configuracion"><i class="bi bi-gear me-2"></i> Configuración</a>
+                    <a href="#modelos"><i class="bi bi-database me-2"></i> Modelos de Datos</a>
+                    <a href="#endpoints"><i class="bi bi-diagram-3 me-2"></i> Endpoints API</a>
+                    <a href="#seguridad"><i class="bi bi-shield-lock me-2"></i> Seguridad</a>
+                    <a href="#capturas"><i class="bi bi-images me-2"></i> Capturas</a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+
+                <!-- Descripción -->
+                <section id="descripcion">
+                    <h2 class="section-title">
+                        <i class="bi bi-info-circle"></i> Descripción del Proyecto
+                    </h2>
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <p class="lead">Sistema web completo para la gestión administrativa de una escuela de patinaje.</p>
+                            <p>Desarrollado con <strong>Spring Boot</strong>, este sistema permite gestionar usuarios, instructores, clases y horarios de forma eficiente y segura.</p>
+                            
+                            <h5 class="mt-4 mb-3">Características Principales:</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <i class="bi bi-check-circle-fill icon-feature me-3"></i>
+                                        <div>
+                                            <h6 class="fw-bold">Gestión de Usuarios</h6>
+                                            <p class="mb-0 text-muted">Sistema completo de registro, autenticación y roles (ADMIN, INSTRUCTOR, ALUMNO)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <i class="bi bi-check-circle-fill icon-feature me-3"></i>
+                                        <div>
+                                            <h6 class="fw-bold">Gestión de Clases</h6>
+                                            <p class="mb-0 text-muted">Administración de horarios, niveles, capacidad e inscripciones</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <i class="bi bi-check-circle-fill icon-feature me-3"></i>
+                                        <div>
+                                            <h6 class="fw-bold">Gestión de Instructores</h6>
+                                            <p class="mb-0 text-muted">Control de especialidades, experiencia y asignación a clases</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <i class="bi bi-check-circle-fill icon-feature me-3"></i>
+                                        <div>
+                                            <h6 class="fw-bold">APIs RESTful</h6>
+                                            <p class="mb-0 text-muted">Endpoints JSON para integración con aplicaciones externas</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tecnologías -->
+                <section id="tecnologias">
+                    <h2 class="section-title">
+                        <i class="bi bi-stack"></i> Tecnologías Utilizadas
+                    </h2>
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="mb-3">Backend</h5>
+                                    <span class="tech-badge"><i class="bi bi-cup-hot"></i> Java 17+</span>
+                                    <span class="tech-badge"><i class="bi bi-spring"></i> Spring Boot 3.x</span>
+                                    <span class="tech-badge">Spring MVC</span>
+                                    <span class="tech-badge">Spring Security</span>
+                                    <span class="tech-badge">Spring Data JPA</span>
+                                    <span class="tech-badge">Hibernate</span>
+                                    <span class="tech-badge">Lombok</span>
+                                    <span class="tech-badge">Bean Validation</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="mb-3">Frontend</h5>
+                                    <span class="tech-badge"><i class="bi bi-filetype-html"></i> HTML5</span>
+                                    <span class="tech-badge"><i class="bi bi-filetype-css"></i> CSS3</span>
+                                    <span class="tech-badge"><i class="bi bi-bootstrap"></i> Bootstrap 5</span>
+                                    <span class="tech-badge">Thymeleaf</span>
+                                    <span class="tech-badge">Bootstrap Icons</span>
+                                </div>
+                                <div class="col-md-6 mt-3">
+                                    <h5 class="mb-3">Base de Datos</h5>
+                                    <span class="tech-badge"><i class="bi bi-database"></i> MySQL 8</span>
+                                    <span class="tech-badge">JDBC</span>
+                                </div>
+                                <div class="col-md-6 mt-3">
+                                    <h5 class="mb-3">Herramientas</h5>
+                                    <span class="tech-badge">Maven</span>
+                                    <span class="tech-badge">Git</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Estructura del Proyecto -->
+                <section id="estructura">
+                    <h2 class="section-title">
+                        <i class="bi bi-folder"></i> Estructura del Proyecto
+                    </h2>
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <div class="code-block">
+<pre>v1/
+├── src/main/
+│   ├── java/com/patinaje/v1/
+│   │   ├── config/              # Configuración de seguridad
+│   │   │   ├── SecurityConfig.java
+│   │   │   └── CustomUserDetailsService.java
+│   │   ├── controller/          # Controladores MVC y API
+│   │   │   ├── AuthController.java
+│   │   │   ├── UserController.java
+│   │   │   ├── claseController.java
+│   │   │   ├── instructorController.java
+│   │   │   └── indexController.java
+│   │   ├── model/               # Entidades JPA
+│   │   │   ├── userModel.java
+│   │   │   ├── claseModel.java
+│   │   │   └── instructorModel.java
+│   │   ├── repository/          # Repositorios JPA
+│   │   │   ├── userRepository.java
+│   │   │   ├── claseRepository.java
+│   │   │   └── instructorRepository.java
+│   │   ├── service/             # Lógica de negocio
+│   │   │   ├── userService.java
+│   │   │   ├── claseService.java
+│   │   │   └── instructorService.java
+│   │   └── V1Application.java   # Clase principal
+│   │
+│   └── resources/
+│       ├── templates/           # Vistas Thymeleaf
+│       │   ├── auth/           # Login y registro
+│       │   ├── users/          # CRUD usuarios
+│       │   ├── clases/         # CRUD clases
+│       │   ├── instructores/   # CRUD instructores
+│       │   ├── fragments/      # Componentes reutilizables
+│       │   └── index.html      # Página principal
+│       ├── static/             # Recursos estáticos
+│       │   ├── css/
+│       │   ├── js/
+│       │   └── images/
+│       └── application.properties
+│
+└── pom.xml</pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Instalación -->
+                <section id="instalacion">
+                    <h2 class="section-title">
+                        <i class="bi bi-download"></i> Guía de Instalación
+                    </h2>
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <h5 class="mb-3">Requisitos Previos</h5>
+                            <ul>
+                                <li><strong>Java Development Kit (JDK) 17</strong> o superior</li>
+                                <li><strong>MySQL 8.0</strong> o superior</li>
+                                <li><strong>Maven 3.6</strong> o superior</li>
+                                <li><strong>IDE</strong> recomendado: IntelliJ IDEA, Eclipse o VS Code</li>
+                            </ul>
+
+                            <h5 class="mt-4 mb-3">Pasos de Instalación</h5>
+                            
+                            <h6 class="fw-bold mt-3">1. Clonar el Repositorio</h6>
+                            <div class="code-block">
+<pre>git clone https://github.com/tu-usuario/skatepro-academy.git
+cd skatepro-academy</pre>
+                            </div>
+
+                            <h6 class="fw-bold mt-3">2. Configurar Base de Datos</h6>
+                            <p>Crear la base de datos en MySQL:</p>
+                            <div class="code-block">
+<pre>CREATE DATABASE escuela_patinaje;
+
+CREATE USER 'patinaje_user'@'localhost' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON escuela_patinaje.* TO 'patinaje_user'@'localhost';
+FLUSH PRIVILEGES;</pre>
+                            </div>
+
+                            <h6 class="fw-bold mt-3">3. Configurar application.properties</h6>
+                            <p>Editar <code>src/main/resources/application.properties</code>:</p>
+                            <div class="code-block">
+<pre>server.port=8080
+
+spring.datasource.url=jdbc:mysql://localhost:3306/escuela_patinaje
+spring.datasource.username=patinaje_user
+spring.datasource.password=1234
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect</pre>
+                            </div>
+
+                            <h6 class="fw-bold mt-3">4. Compilar y Ejecutar</h6>
+                            <div class="code-block">
+<pre># Compilar el proyecto
+mvn clean install
+
+# Ejecutar la aplicación
+mvn spring-boot:run</pre>
+                            </div>
+
+                            <h6 class="fw-bold mt-3">5. Acceder a la Aplicación</h6>
+                            <p>Abrir el navegador en: <a href="http://localhost:8080" target="_blank" class="text-decoration-none">http://localhost:8080</a></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Configuración -->
+                <section id="configuracion">
+                    <h2 class="section-title">
+                        <i class="bi bi-gear"></i> Configuración y Seguridad
+                    </h2>
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <h5 class="mb-3">Sistema de Autenticación</h5>
+                            <p>El sistema utiliza <strong>Spring Security</strong> con las siguientes características:</p>
+                            <ul>
+                                <li>Autenticación basada en formulario (Form-based Login)</li>
+                                <li>Contraseñas encriptadas con <strong>BCrypt</strong></li>
+                                <li>Gestión de sesiones HTTP</li>
+                                <li>Protección CSRF (excepto para endpoints API)</li>
+                            </ul>
+
+                            <h5 class="mt-4 mb-3">Roles y Permisos</h5>
+                            <table class="table table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Rol</th>
+                                        <th>Permisos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-danger">ADMIN</span></td>
+                                        <td>Acceso total: gestión de usuarios, clases, instructores</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-warning">INSTRUCTOR</span></td>
+                                        <td>Gestión de sus clases, visualización de alumnos</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">ALUMNO</span></td>
+                                        <td>Visualización de clases, inscripciones, perfil personal</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h5 class="mt-4 mb-3">Rutas Protegidas</h5>
+                            <div class="code-block">
+<pre>// Rutas públicas
+/, /index/**, /registro, /login, /css/**, /js/**, /images/**
+
+// Solo ADMIN
+/users/**
+
+// INSTRUCTOR y ADMIN
+/instructor/**
+
+// ALUMNO, INSTRUCTOR y ADMIN
+/alumno/**</pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Modelos de Datos -->
+                <section id="modelos">
+                    <h2 class="section-title">
+                        <i class="bi bi-database"></i> Modelos de Datos
+                    </h2>
+                    
+                    <!-- UserModel -->
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <h5><i class="bi bi-person"></i> UserModel (tbl_users)</h5>
+                            <table class="table table-custom mt-3">
+                                <thead>
+                                    <tr>
+                                        <th>Campo</th>
+                                        <th>Tipo</th>
+                                        <th>Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>id</td><td>Long</td><td>Identificador único (PK, Auto)</td></tr>
+                                    <tr><td>name</td><td>String(50)</td><td>Nombre completo del usuario</td></tr>
+                                    <tr><td>email</td><td>String(100)</td><td>Correo electrónico (Único)</td></tr>
+                                    <tr><td>password</td><td>String</td><td>Contraseña encriptada (BCrypt)</td></tr>
+                                    <tr><td>phone</td><td>String(15)</td><td>Número de teléfono</td></tr>
+                                    <tr><td>fechaNacimiento</td><td>LocalDate</td><td>Fecha de nacimiento</td></tr>
+                                    <tr><td>genero</td><td>String(20)</td><td>Género del usuario</td></tr>
+                                    <tr><td>rol</td><td>Enum</td><td>ADMIN, INSTRUCTOR, ALUMNO</td></tr>
+                                    <tr><td>activo</td><td>Boolean</td><td>Estado de la cuenta (true/false)</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- InstructorModel -->
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <h5><i class="bi bi-person-badge"></i> InstructorModel (tbl_instructores)</h5>
+                            <table class="table table-custom mt-3">
+                                <thead>
+                                    <tr>
+                                        <th>Campo</th>
+                                        <th>Tipo</th>
+                                        <th>Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>id</td><td>Long</td><td>Identificador único (PK, Auto)</td></tr>
+                                    <tr><td>nombre</td><td>String(50)</td><td>Nombre del instructor</td></tr>
+                                    <tr><td>email</td><td>String(50)</td><td>Correo electrónico (Único)</td></tr>
+                                    <tr><td>telefono</td><td>String(15)</td><td>Número de contacto</td></tr>
+                                    <tr><td>especialidad</td><td>String(100)</td><td>Ej: Freestyle, Velocidad, Artístico</td></tr>
+                                    <tr><td>experiencia</td><td>String(100)</td><td>Años de experiencia</td></tr>
+                                    <tr><td>estado</td><td>String(20)</td><td>Activo/Inactivo</td></tr>
+                                    <tr><td>fechaRegistro</td><td>String</td><td>Fecha de registro</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- ClaseModel -->
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <h5><i class="bi bi-calendar-event"></i> ClaseModel (tbl_clases)</h5>
+                            <table class="table table-custom mt-3">
+                                <thead>
+                                    <tr>
+                                        <th>Campo</th>
+                                        <th>Tipo</th>
+                                        <th>Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>id</td><td>Long</td><td>Identificador único (PK, Auto)</td></tr>
+                                    <tr><td>nombre</td><td>String(50)</td><td>Nombre de la clase</td></tr>
+                                    <tr><td>nivel</td><td>String(30)</td><td>Mini, Júnior, Adultos, etc.</td></tr>
+                                    <tr><td>dia</td><td>String(20)</td><td>Lunes, Martes, Miércoles, etc.</td></tr>
+                                    <tr><td>horaInicio</td><td>String(20)</td><td>Hora de inicio (HH:mm)</td></tr>
+                                    <tr><td>horaFin</td><td>String(20)</td><td>Hora de finalización (HH:mm)</td></tr>
+                                    <tr><td>capacidad</td><td>Integer</td><td>Número máximo de alumnos</td></tr>
+                                    <tr><td>inscritos</td><td>Integer</td><td>Número actual de inscritos</td></tr>
+                                    <tr><td>descripcion</td><td>Text</td><td>Descripción de la clase</td></tr>
+                                    <tr><td>estado</td><td>String(20)</td><td>Activa, Inactiva, Pausada</td></tr>
+                                    <tr><td>instructor</td><td>ManyToOne</td><td>Relación con instructor (FK)</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Endpoints API -->
+                <section id="endpoints">
+                    <h2 class="section-title">
+                        <i class="bi bi-diagram-3"></i> Endpoints de la API
+                    </h2>
+                    
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <h5 class="mb-3"><i class="bi bi-people"></i> API de Usuarios</h5>
+                            <table class="table table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Método</th>
+                                        <th>Endpoint</th>
+                                        <th>Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/users/api/json</td><td>Lista todos los usuarios en JSON</td></tr>
+                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/users/api/json/{id}</td><td>Obtiene un usuario por ID</td></tr>
+                                </tbody>
+                            </table>
+
+                            <h5 class="mt-4 mb-3"><i class="bi bi-calendar-event"></i> API de Clases</h5>
+                            <table class="table table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Método</th>
+                                        <th>Endpoint</th>
+                                        <th>Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/clases/api/json</td><td>Lista todas las clases en JSON</td></tr>
+                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/clases/api/json/{id}</td><td>Obtiene una clase por ID</td></tr>
+                                </tbody>
+                            </table>
+
+                            <h5 class="mt-4 mb-3"><i class="bi bi-person-badge"></i> API de Instructores</h5>
+                            <table class="table table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Método</th>
+                                        <th>Endpoint</th>
+                                        <th>Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/instructores/api/json</td><td>Lista todos los instructores en JSON</td></tr>
+                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/instructores/api/json/{id}</td><td>Obtiene un instructor por ID</td></tr>
+                                </tbody>
+                            </table>
+
+                            <h5 class="mt-4 mb-3">Ejemplo de Respuesta JSON</h5>
+                            <div class="code-block">
+<pre>{
+  "timestamp": "2024-12-05T10:30:00",
+  "status": 200,
+  "data": [
+    {
+      "id": 1,
+      "name": "Juan Pérez",
+      "email": "juan@example.com",
+      "phone": "+34 600 000 000",
+      "rol": "ALUMNO",
+      "activo": true
+    }
+  ],
+  "total": 1,
+  "path": "/users/api/json"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seguridad -->
+                <section id="seguridad">
+                    <h2 class="section-title">
+                        <i class="bi bi-shield-lock"></i> Seguridad y Mejores Prácticas
+                    </h2>
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <h5 class="mb-3">Características de Seguridad Implementadas</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li><i class="bi bi-check2 text-success"></i> Encriptación de contraseñas con BCrypt</li>
+                                        <li><i class="bi bi-check2 text-success"></i> Protección CSRF en formularios</li>
+                                        <li><i class="bi bi-check2 text-success"></i> Control de acceso basado en roles (RBAC)</li>
+                                        <li><i class="bi bi-check2 text-success"></i> Validación de datos con Bean Validation</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li><i class="bi bi-check2 text-success"></i> Sesiones HTTP seguras</li>
+                                        <li><i class="bi bi-check2 text-success"></i> Logout con invalidación de sesión</li>
+                                        <li><i class="bi bi-check2 text-success"></i> Protección contra ataques XSS</li>
+                                        <li><i class="bi bi-check2 text-success"></i> Prevención de SQL Injection (JPA)</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <h5 class="mt-4 mb-3">Recomendaciones de Seguridad</h5>
+                            <div class="alert alert-warning">
+                                <i class="bi bi-exclamation-triangle"></i> 
+                                <strong>Importante:</strong> En producción, asegúrate de:
+                                <ul class="mb-0 mt-2">
+                                    <li>Cambiar las credenciales de la base de datos</li>
+                                    <li>Usar HTTPS para las comunicaciones</li>
+                                    <li>Configurar variables de entorno para datos sensibles</li>
+                                    <li>Implementar rate limiting en los endpoints</li>
+                                    <li>Mantener las dependencias actualizadas</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Capturas de Pantalla -->
+                <section id="capturas">
+                    <h2 class="section-title">
+                        <i class="bi bi-images"></i> Capturas de Pantalla
+                    </h2>
+                    
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <h5 class="mb-3">Pantalla de Inicio</h5>
+                            <p class="text-muted">Página principal con carrusel de imágenes, información de la escuela y enlaces de navegación.</p>
+                            <div class="bg-light p-3 rounded text-center">
+                                <i class="bi bi-image" style="font-size: 5rem; color: #ccc;"></i>
+                                <p class="text-muted mb-0">Captura: index.html</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <h5 class="mb-3">Sistema de Login</h5>
+                            <p class="text-muted">Formulario de autenticación con validación de credenciales y mensajes de error.</p>
+                            <div class="bg-light p-3 rounded text-center">
+                                <i class="bi bi-box-arrow-in-right" style="font-size: 5rem; color: #ccc;"></i>
+                                <p class="text-muted mb-0">Captura: login.html</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <h5 class="mb-3">Gestión de Usuarios (ADMIN)</h5>
+                            <p class="text-muted">Panel administrativo para crear, editar, visualizar y eliminar usuarios del sistema.</p>
+                            <div class="bg-light p-3 rounded text-center">
+                                <i class="bi bi-people-fill" style="font-size: 5rem; color: #ccc;"></i>
+                                <p class="text-muted mb-0">Captura: users/list.html</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <h5 class="mb-3">Gestión de Clases</h5>
+                            <p class="text-muted">Administración completa de clases con información de horarios, capacidad e instructores asignados.</p>
+                            <div class="bg-light p-3 rounded text-center">
+                                <i class="bi bi-calendar-event" style="font-size: 5rem; color: #ccc;"></i>
+                                <p class="text-muted mb-0">Captura: clases/list.html</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <h5 class="mb-3">Gestión de Instructores</h5>
+                            <p class="text-muted">Control de instructores con especialidades, experiencia y estado de actividad.</p>
+                            <div class="bg-light p-3 rounded text-center">
+                                <i class="bi bi-person-badge" style="font-size: 5rem; color: #ccc;"></i>
+                                <p class="text-muted mb-0">Captura: instructores/list.html</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Información Adicional -->
+                <section>
+                    <h2 class="section-title">
+                        <i class="bi bi-info-square"></i> Información Adicional
+                    </h2>
+                    
+                    <div class="card-doc">
+                        <div class="card-body">
+                            <h5 class="mb-3">Soporte y Contacto</h5>
+                            <p>Para soporte técnico o consultas sobre el proyecto, contacta a:</p>
+                            <ul>
+                                <li><i class="bi bi-envelope"></i> Email: info@skateproacademy.com</li>
+                                <li><i class="bi bi-github"></i> GitHub: <a href="#">github.com/skatepro-academy</a></li>
+                                <li><i class="bi bi-globe"></i> Web: <a href="#">www.skateproacademy.com</a></li>
+                            </ul>
+
+                            <h5 class="mt-4 mb-3">Licencia</h5>
+                            <p>Este proyecto está bajo la licencia MIT. Puedes usarlo, modificarlo y distribuirlo libremente.</p>
+
+                            <h5 class="mt-4 mb-3">Contribuciones</h5>
+                            <p>Las contribuciones son bienvenidas. Por favor, sigue estos pasos:</p>
+                            <ol>
+                                <li>Fork el repositorio</li>
+                                <li>Crea una rama para tu feature (<code>git checkout -b feature/nueva-funcionalidad</code>)</li>
+                                <li>Commit tus cambios (<code>git commit -m 'Agregar nueva funcionalidad'</code>)</li>
+                                <li>Push a la rama (<code>git push origin feature/nueva-funcionalidad</code>)</li>
+                                <li>Abre un Pull Request</li>
+                            </ol>
+
+                            <h5 class="mt-4 mb-3">Créditos</h5>
+                            <p>Desarrollado por el equipo de SkatePro Academy como proyecto de gestión académica.</p>
+                            <p class="mb-0"><strong>Versión:</strong> 1.0 | <strong>Fecha:</strong> Diciembre 2024</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Botón volver -->
+                <div class="text-center my-5">
+                    <a href="/" class="btn btn-lg" style="background-color: var(--color-principal); color: white;">
+                        <i class="bi bi-house"></i> Volver al Inicio
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-6 text-md-start mb-3 mb-md-0">
+                    <h5>SkatePro Academy</h5>
+                    <p class="mb-0">Sistema de Gestión Académica</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">© 2024 SkatePro Academy - Documentación Técnica v1.0</p>
+                    <small>Desarrollado con Spring Boot + Thymeleaf + MySQL</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script para smooth scrolling -->
+    <script>
+        document.querySelectorAll('.sidebar a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight active section in sidebar
+        window.addEventListener('scroll', () => {
+            let current = '';
+            document.querySelectorAll('section').forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('.sidebar a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
