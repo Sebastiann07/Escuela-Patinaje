@@ -27,6 +27,7 @@ Sistema de gestión de una escuela de patinaje desarrollado con Spring Boot y vi
 🏗 Arquitectura del Sistema
 Arquitectura en capas orientada a MVC:
 
+```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────┐
 │   Presentación  │    │     Dominio     │    │   Persistencia      │
 │  (Controllers & │────│  (Servicios y   │────│ (Repositorios/Data  │
@@ -35,6 +36,7 @@ Arquitectura en capas orientada a MVC:
 │ - Controladores │    │ - Services      │    │ - Repositories      │
 │ - Templates     │    │ - Models        │    │ - MySql             │
 └─────────────────┘    └─────────────────┘    └─────────────────────┘
+```
 
 🎯 Roles del Sistema
 - Admin/Staff: Gestión de clases, instructores y usuarios.
