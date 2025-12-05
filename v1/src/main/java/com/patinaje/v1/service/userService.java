@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.patinaje.v1.repository.userRepository;
@@ -13,7 +14,10 @@ import com.patinaje.v1.model.userModel;
 public class userService {
     
     @Autowired
-    userRepository userRepository;
+    private userRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<userModel> getAllUsers() {
         return userRepository.findAll();
@@ -24,9 +28,12 @@ public class userService {
     }
 
     public userModel createUser(userModel user) {
+        // Si la contraseña no está encriptada, encriptarla
+        if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         return userRepository.save(user);
     }
-
 
     public userModel updateUser(Long id, userModel userDetails) {
         Optional<userModel> user = userRepository.findById(id);
@@ -40,11 +47,21 @@ public class userService {
             if (userDetails.getEmail() != null) {
                 existingUser.setEmail(userDetails.getEmail());
             }
-            if (userDetails.getPassword() != null) {
-                existingUser.setPassword(userDetails.getPassword());
+            // Solo actualizar contraseña si se proporciona una nueva
+            if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
+                existingUser.setPassword(passwordEncoder.encode(userDetails.getPassword()));
             }
             if (userDetails.getPhone() != null) {
                 existingUser.setPhone(userDetails.getPhone());
+            }
+            if (userDetails.getFechaNacimiento() != null) {
+                existingUser.setFechaNacimiento(userDetails.getFechaNacimiento());
+            }
+            if (userDetails.getGenero() != null) {
+                existingUser.setGenero(userDetails.getGenero());
+            }
+            if (userDetails.getRol() != null) {
+                existingUser.setRol(userDetails.getRol());
             }
             
             return userRepository.save(existingUser);
@@ -53,7 +70,6 @@ public class userService {
         return null;
     }
 
-
     public boolean deleteUser(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
@@ -61,7 +77,6 @@ public class userService {
         }
         return false;
     }
-
 
     public Optional<userModel> getUserByEmail(String email) {
         return userRepository.findByEmail(email);

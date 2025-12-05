@@ -6,12 +6,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "tbl_users")
@@ -22,21 +26,41 @@ public class userModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private Long id;
 
-    @Column(name = "nombre", nullable = true, length = 50)
+    @Column(name = "nombre", nullable = false, length = 50)
     @NotBlank(message = "El nombre es obligatorio")
-    String name;
+    private String name;
 
-    @Column(name = "e_mail", nullable = false, length = 40)
+    @Column(name = "e_mail", nullable = false, unique = true, length = 100)
     @Email(message = "Debe ser un correo válido")
     @NotBlank(message = "El email es obligatorio")
-    String email;
+    private String email;
 
-    @NotBlank(message = "La contraseña es obligatoria ")
+    @NotBlank(message = "La contraseña es obligatoria")
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
-    String password;
+    private String password;
 
-    @Column(name = "telefono", nullable = true, length = 15)
-    String phone;
+    @Column(name = "telefono", length = 15)
+    private String phone;
+
+    @Column(name = "fecha_nacimiento")
+    private LocalDate fechaNacimiento;
+
+    @Column(name = "genero", length = 20)
+    private String genero;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rol", nullable = false)
+    private Role rol = Role.ALUMNO; // Por defecto es alumno
+
+    @Column(name = "activo")
+    private boolean activo = true;
+
+    // Enum para los roles
+    public enum Role {
+        ADMIN,
+        INSTRUCTOR,
+        ALUMNO
+    }
 }

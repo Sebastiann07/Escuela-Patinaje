@@ -1,9 +1,10 @@
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-primary"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="container">
 
         <!-- LOGO + TITULO -->
         <a class="navbar-brand d-flex align-items-center" href="/">
-            <img th:src="@{/images/logo.png}" alt="Logo" style="height: 40px; margin-right: 10px;">
+            <img th:src="@{/images/logo.png}" alt="Logo">
             <strong>SkatePro Academy</strong>
         </a>
 
@@ -13,41 +14,64 @@
 
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/#inicio">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#valores">Valores</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#clases">Clases</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#horarios">Horarios</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#contacto">Contacto</a></li>
                 
-                <!-- DROPDOWN INFORMACIÓN -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navInformacion" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Información
+                <!-- Mostrar solo si NO está autenticado -->
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="btn btn-outline-light ms-2" href="/registro">
+                        <i class="bi bi-person-plus"></i> Inscribirse
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navInformacion">
-                        <li><a class="dropdown-item" href="/#valores">Valores</a></li>
-                        <li><a class="dropdown-item" href="/#clases">Clases</a></li>
-                        <li><a class="dropdown-item" href="/#horarios">Horarios</a></li>
-                        <li><a class="dropdown-item" href="/#contacto">Contacto</a></li>
-                    </ul>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="btn btn-outline-light ms-2" href="/login">
+                        <i class="bi bi-box-arrow-in-right"></i> Ingresar
+                    </a>
                 </li>
 
-                <!-- DROPDOWN GESTIÓN -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navGestion" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Gestión
+                <!-- Mostrar solo si está autenticado -->
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle"></i> 
+                        <span sec:authentication="name"></span>
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navGestion">
-                        <li><a class="dropdown-item" href="/users/listar">
-                            <i class="bi bi-people"></i> Usuarios
-                        </a></li>
-                        <li><a class="dropdown-item" href="/clases/listar">
-                            <i class="bi bi-calendar-event"></i> Clases
-                        </a></li>
-                        <li><a class="dropdown-item" href="/instructores/listar">
-                            <i class="bi bi-person-badge"></i> Instructores
-                        </a></li>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item disabled">
+                                <small class="text-muted">Rol: <span sec:authentication="authorities"></span></small>
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        
+                        <!-- Solo para ADMIN -->
+                        <li sec:authorize="hasAuthority('ADMIN')">
+                            <a class="dropdown-item" href="/users/listar">
+                                <i class="bi bi-people"></i> Gestión de Usuarios
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a class="dropdown-item" href="/dashboard">
+                                <i class="bi bi-speedometer2"></i> Mi Panel
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-person"></i> Mi Perfil
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post" style="display: inline;">
+                                <button type="submit" class="dropdown-item text-danger" style="border: none; background: none; width: 100%; text-align: left;">
+                                    <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                                </button>
+                            </form>
+                        </li>
                     </ul>
-                </li>
-
-                <li class="nav-item">
-                    <a class="btn btn-outline-primary ms-2" href="/users/listar">Inscribirse</a>
                 </li>
             </ul>
         </div>

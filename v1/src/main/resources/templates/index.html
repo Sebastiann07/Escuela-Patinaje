@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragments/head :: head"></head>
 
@@ -22,7 +23,16 @@
                     Ofrecemos cursos para principiantes, intermedios y avanzados. 
                     Nuestro objetivo es enseñar técnica, seguridad y disfrutar del deporte en familia.
                 </p>
-                <a id="inscribirse" class="btn btn-primary" href="#contacto">Inscribirme</a>
+                
+                <!-- Botón que cambia según el estado de autenticación -->
+                <div sec:authorize="!isAuthenticated()">
+                    <a id="inscribirse" class="btn btn-primary" href="/registro">Inscribirme</a>
+                </div>
+                <div sec:authorize="isAuthenticated()">
+                    <a class="btn btn-success" href="/dashboard">
+                        <i class="bi bi-speedometer2"></i> Ir a mi panel
+                    </a>
+                </div>
             </div>
 
             <div class="col-lg-6">
