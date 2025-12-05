@@ -34,6 +34,9 @@ public class SecurityConfig {
                 // Rutas solo para ADMIN
                 .requestMatchers("/users/**").hasAuthority("ADMIN")
                 
+                // Asistencia: solo INSTRUCTOR y ADMIN
+                .requestMatchers("/asistencia/**").hasAnyAuthority("INSTRUCTOR", "ADMIN")
+                
                 // Rutas para INSTRUCTOR
                 .requestMatchers("/instructor/**").hasAnyAuthority("INSTRUCTOR", "ADMIN")
                 

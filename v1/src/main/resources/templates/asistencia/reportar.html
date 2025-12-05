@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Asistencia</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { max-width: 900px; margin-top: 30px; }
+        .card { box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: none; border-radius: 8px; }
+        .table th { background-color: #0d6efd; color: white; }
+        .badge-present { background-color: #198754; }
+        .badge-absent { background-color: #dc3545; }
+        .badge-justified { background-color: #ffc107; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0" th:text="'Reporte de asistencia - ' + ${alumno?.name}"></h2>
+            <small th:if="${alumno}" th:text="'Email: ' + ${alumno.email}"></small>
+        </div>
+
+        <div class="card-body">
+            <div th:if="${asistencias.isEmpty()}" class="alert alert-info">
+                No hay registros de asistencia para este alumno.
+            </div>
+
+            <table class="table table-striped" th:unless="${asistencias.isEmpty()}">
+                <thead>
+                    <tr>
+                        <th>Clase</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="a : ${asistencias}">
+                        <td th:text="${a.clase?.nombre}"></td>
+                        <td th:text="${#temporals.format(a.fecha, 'dd/MM/yyyy')}"></td>
+                        <td>
+                            <span th:if="${a.estado == 'ASISTIÓ'}" class="badge badge-present">✓ Asistió</span>
+                            <span th:if="${a.estado == 'FALLÓ'}" class="badge badge-absent">✗ Falló</span>
+                            <span th:if="${a.estado == 'JUSTIFICÓ'}" class="badge badge-justified">⊘ Justificó</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div th:unless="${asistencias.isEmpty()}" class="row mt-4">
+                <div class="col-md-4">
+                    <div class="alert alert-success">
+                        <strong>Asistencias:</strong>
+                        <span th:text="${#arrays.length(asistencias.?[estado == 'ASISTIÓ'])}">0</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="alert alert-danger">
+                        <strong>Faltas:</strong>
+                        <span th:text="${#arrays.length(asistencias.?[estado == 'FALLÓ'])}">0</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="alert alert-warning">
+                        <strong>Justificadas:</strong>
+                        <span th:text="${#arrays.length(asistencias.?[estado == 'JUSTIFICÓ'])}">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer text-center">
+            <a href="/" class="btn btn-secondary">Volver al inicio</a>
+        </div>
+    </div>
+</div>
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
