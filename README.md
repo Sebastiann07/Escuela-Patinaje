@@ -1,3 +1,5 @@
+Api documentación: http://localhost:8080/swagger-ui.html
+
 # 🛼 Escuela de Patinaje - Guía del Proyecto (Estructura Adaptada)
 
 Sistema de gestión de escuela de patinaje desarrollado con **Spring Boot** y **Thymeleaf**, organizado por capas (Controllers, Services, Repositories, Models) y usando **Bootstrap** en las vistas.
