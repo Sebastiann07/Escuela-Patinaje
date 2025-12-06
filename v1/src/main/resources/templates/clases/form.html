@@ -129,13 +129,21 @@
               <label for="capacidad" class="form-label">Capacidad <span class="text-danger">*</span></label>
               <input type="number" class="form-control" id="capacidad" name="capacidad" placeholder="20" min="1" required>
             </div>
-
-            <div class="col-md-6 mb-3">
-              <label for="instructor_id" class="form-label">Instructor (Opcional)</label>
-              <select class="form-select" id="instructor_id" name="instructor.id">
-                <option value="">Sin asignar</option>
-                <option th:each="inst : ${instructores}" th:value="${inst.id}" th:text="${inst.nombre}">Instructor</option>
-              </select>
+            <!-- Instructor: oculto para INSTRUCTOR; visible para ADMIN -->
+            <div class="col-md-6 mb-3" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+              <div sec:authorize="hasAuthority('ADMIN')">
+                <label for="instructor_id" class="form-label">Instructor (Opcional)</label>
+                <select class="form-select" id="instructor_id" name="instructor.id">
+                  <option value="">Sin asignar</option>
+                  <option th:each="inst : ${instructores}" th:value="${inst.id}" th:selected="${clase.instructor != null and clase.instructor.id == inst.id}" th:text="${inst.nombre}">Instructor</option>
+                </select>
+              </div>
+              <div sec:authorize="hasAuthority('INSTRUCTOR')">
+                <!-- Mantener el instructor asignado sin permitir cambiar -->
+                <input type="hidden" name="instructor.id" th:value="${clase.instructor != null ? clase.instructor.id : ''}" />
+                <label class="form-label">Instructor asignado</label>
+                <input type="text" class="form-control" th:value="${clase.instructor != null ? clase.instructor.nombre : 'Sin asignar'}" readonly />
+              </div>
             </div>
           </div>
 
@@ -223,12 +231,19 @@
               <input type="number" class="form-control" id="capacidad" name="capacidad" th:value="${clase.capacidad}" min="1" required>
             </div>
 
-            <div class="col-md-6 mb-3">
-              <label for="instructor_id" class="form-label">Instructor</label>
-              <select class="form-select" id="instructor_id" name="instructor.id">
-                <option value="">Sin asignar</option>
-                <option th:each="inst : ${instructores}" th:value="${inst.id}" th:selected="${clase.instructor != null and clase.instructor.id == inst.id}" th:text="${inst.nombre}">Instructor</option>
-              </select>
+            <div class="col-md-6 mb-3" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+              <div sec:authorize="hasAuthority('ADMIN')">
+                <label for="instructor_id" class="form-label">Instructor</label>
+                <select class="form-select" id="instructor_id" name="instructor.id">
+                  <option value="">Sin asignar</option>
+                  <option th:each="inst : ${instructores}" th:value="${inst.id}" th:selected="${clase.instructor != null and clase.instructor.id == inst.id}" th:text="${inst.nombre}">Instructor</option>
+                </select>
+              </div>
+              <div sec:authorize="hasAuthority('INSTRUCTOR')">
+                <input type="hidden" name="instructor.id" th:value="${clase.instructor != null ? clase.instructor.id : ''}" />
+                <label class="form-label">Instructor asignado</label>
+                <input type="text" class="form-control" th:value="${clase.instructor != null ? clase.instructor.nombre : 'Sin asignar'}" readonly />
+              </div>
             </div>
           </div>
 

@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 
 @Configuration
 @EnableWebSecurity
@@ -29,7 +30,24 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 // Rutas públicas (sin autenticación)
-                .requestMatchers("/", "/index/**", "/registro", "/login", "/css/**", "/js/**", "/images/**").permitAll()
+                .requestMatchers(
+                    "/",
+                    "/index",
+                    "/index/**",
+                    "/home",
+                    "/registro",
+                    "/login"
+                ).permitAll()
+                // Recursos estáticos
+                .requestMatchers(
+                    "/css/**",
+                    "/js/**",
+                    "/images/**",
+                    "/static/**",
+                    "/webjars/**"
+                ).permitAll()
+                // Listados públicos de lectura
+                .requestMatchers("/users/listar", "/instructores/listar", "/clases/listar").permitAll()
                 // Rutas OpenAPI / Swagger (permitir acceso público)
                 .requestMatchers(
                     "/swagger-ui.html",
@@ -48,10 +66,12 @@ public class SecurityConfig {
                 .requestMatchers("/asistencia/**").hasAnyAuthority("INSTRUCTOR", "ADMIN")
                 
                 // Rutas para INSTRUCTOR
-                .requestMatchers("/instructor/**").hasAnyAuthority("INSTRUCTOR", "ADMIN")
+                .requestMatchers("/instructores/**").hasAnyAuthority("INSTRUCTOR", "ADMIN")
                 
                 // Rutas para ALUMNO (y superiores)
                 .requestMatchers("/alumno/**").hasAnyAuthority("ALUMNO", "INSTRUCTOR", "ADMIN")
+                // Inscripción a clases por alumnos
+                .requestMatchers("/clases/inscribir/**", "/clases/cancelar/**").hasAnyAuthority("ALUMNO", "ADMIN")
                 
                 // Cualquier otra ruta requiere autenticación
                 .anyRequest().authenticated()
@@ -73,5 +93,17 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**")); // Deshabilitar CSRF para APIs
 
         return http.build();
+    }
+
+    // Ignorar completamente filtros de seguridad para recursos estáticos
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().requestMatchers(
+            "/css/**",
+            "/js/**",
+            "/images/**",
+            "/static/**",
+            "/webjars/**"
+        );
     }
 }

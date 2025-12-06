@@ -64,8 +64,14 @@ public class claseController {
 
     // Formulario para crear nueva clase
     @GetMapping("/crear")
-    public String crearClaseForm(Model model) {
-        model.addAttribute("clase", new claseModel());
+    public String crearClaseForm(Model model, org.springframework.security.core.Authentication auth) {
+        claseModel clase = new claseModel();
+        // Si el autenticado es INSTRUCTOR, precargar su usuario como instructor de la clase
+        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("INSTRUCTOR"))) {
+            String email = auth.getName();
+            instructorService.getInstructorByEmail(email).ifPresent(clase::setInstructor);
+        }
+        model.addAttribute("clase", clase);
         List<instructorModel> instructores = instructorService.getInstructoresActivos();
         model.addAttribute("instructores", instructores);
         return "clases/form";
@@ -154,6 +160,42 @@ public class claseController {
             return "redirect:/clases/listar";
         } catch (Exception e) {
             redirect.addFlashAttribute("error", "Error al eliminar: " + e.getMessage());
+            return "redirect:/clases/listar";
+        }
+    }
+
+    // Inscribir alumno a una clase (incrementa inscritos si hay cupo)
+    @PostMapping("/inscribir/{id}")
+    public String inscribirEnClase(@PathVariable Long id, RedirectAttributes redirect) {
+        try {
+            if (!claseService.tieneDisponibilidad(id)) {
+                redirect.addFlashAttribute("error", "La clase está llena, no hay cupos disponibles");
+                return "redirect:/clases/listar";
+            }
+            claseService.aumentarInscritos(id);
+            redirect.addFlashAttribute("success", "Inscripción realizada correctamente");
+            return "redirect:/clases/listar";
+        } catch (IllegalStateException e) {
+            redirect.addFlashAttribute("error", e.getMessage());
+            return "redirect:/clases/listar";
+        } catch (Exception e) {
+            redirect.addFlashAttribute("error", "Error al inscribirse: " + e.getMessage());
+            return "redirect:/clases/listar";
+        }
+    }
+
+    // Cancelar inscripción (decrementa inscritos si hay alguno)
+    @PostMapping("/cancelar/{id}")
+    public String cancelarInscripcion(@PathVariable Long id, RedirectAttributes redirect) {
+        try {
+            claseService.disminuirInscritos(id);
+            redirect.addFlashAttribute("success", "Inscripción cancelada correctamente");
+            return "redirect:/clases/listar";
+        } catch (IllegalStateException e) {
+            redirect.addFlashAttribute("error", e.getMessage());
+            return "redirect:/clases/listar";
+        } catch (Exception e) {
+            redirect.addFlashAttribute("error", "Error al cancelar inscripción: " + e.getMessage());
             return "redirect:/clases/listar";
         }
     }

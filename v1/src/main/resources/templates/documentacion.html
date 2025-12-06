@@ -166,6 +166,12 @@
                     </h2>
                     <div class="card-doc">
                         <div class="card-body">
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle"></i>
+                                Los endpoints <strong>GET</strong> se pueden abrir directamente en el navegador.
+                                Acciones <strong>POST/PUT/DELETE</strong> requieren formularios con token CSRF o clientes como Thunder Client/Postman.
+                                Algunos recursos están protegidos por roles (ADMIN/INSTRUCTOR/ALUMNO).
+                            </div>
                             <p class="lead">Sistema web completo para la gestión administrativa de una escuela de patinaje.</p>
                             <p>Desarrollado con <strong>Spring Boot</strong>, este sistema permite gestionar usuarios, instructores, clases y horarios de forma eficiente y segura.</p>
                             
@@ -535,8 +541,8 @@ mvn spring-boot:run</pre>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/users/api/json</td><td>Lista todos los usuarios en JSON</td></tr>
-                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/users/api/json/{id}</td><td>Obtiene un usuario por ID</td></tr>
+                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/users/api/json</td><td>Lista todos los usuarios en JSON <span class="badge bg-danger">ADMIN</span></td></tr>
+                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/users/api/json/{id}</td><td>Obtiene un usuario por ID <span class="badge bg-danger">ADMIN</span></td></tr>
                                 </tbody>
                             </table>
 
@@ -550,8 +556,8 @@ mvn spring-boot:run</pre>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/clases/api/json</td><td>Lista todas las clases en JSON</td></tr>
-                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/clases/api/json/{id}</td><td>Obtiene una clase por ID</td></tr>
+                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/clases/api/json</td><td>Lista todas las clases en JSON <span class="badge bg-success">Público</span></td></tr>
+                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/clases/api/json/{id}</td><td>Obtiene una clase por ID <span class="badge bg-success">Público</span></td></tr>
                                 </tbody>
                             </table>
 
@@ -565,8 +571,8 @@ mvn spring-boot:run</pre>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/instructores/api/json</td><td>Lista todos los instructores en JSON</td></tr>
-                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/instructores/api/json/{id}</td><td>Obtiene un instructor por ID</td></tr>
+                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/instructores/api/json</td><td>Lista todos los instructores en JSON <span class="badge bg-success">Público</span></td></tr>
+                                    <tr><td><span class="badge bg-primary">GET</span></td><td>/instructores/api/json/{id}</td><td>Obtiene un instructor por ID <span class="badge bg_success">Público</span></td></tr>
                                 </tbody>
                             </table>
 

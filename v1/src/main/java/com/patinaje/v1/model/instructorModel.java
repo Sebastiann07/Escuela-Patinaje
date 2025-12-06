@@ -1,17 +1,18 @@
 package com.patinaje.v1.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Table(name = "tbl_instructores")
@@ -35,6 +36,12 @@ public class instructorModel {
     @NotBlank(message = "El email es obligatorio")
     @Schema(description = "Correo electrónico", example = "instructor@example.com")
     String email;
+
+    @Column(name = "password", nullable = false, length = 100)
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
+    @Schema(description = "Contraseña (solo escritura)", example = "secret123")
+    String password;
 
     @Column(name = "telefono", nullable = true, length = 15)
     @Schema(description = "Teléfono de contacto", example = "+34123456789")

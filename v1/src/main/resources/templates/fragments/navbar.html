@@ -14,17 +14,50 @@
 
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link active" href="/#inicio">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link" href="/#valores">Valores</a></li>
-                <li class="nav-item"><a class="nav-link" href="/#clases">Clases</a></li>
-                <li class="nav-item"><a class="nav-link" href="/#horarios">Horarios</a></li>
-                <li class="nav-item"><a class="nav-link" href="/#contacto">Contacto</a></li>
-                
+                <!-- Menú para INSTRUCTOR/ADMIN: solo Inicio, Clases(Instructor), Asistencia -->
+                <li class="nav-item" sec:authorize="hasAnyAuthority('INSTRUCTOR','ADMIN')">
+                    <a class="nav-link active" href="/#inicio">Inicio</a>
+                </li>
+                <!-- Clases: dropdown para INSTRUCTOR y ADMIN (ver y programar) -->
+                <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('INSTRUCTOR','ADMIN')">
+                    <a class="nav-link dropdown-toggle" href="#" id="navClasesInstr" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-calendar-event"></i> Clases (Instructor)
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navClasesInstr">
+                        <li>
+                            <a class="dropdown-item" href="/clases/listar">
+                                <i class="bi bi-eye"></i> Ver Clases
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/clases/crear">
+                                <i class="bi bi-calendar-plus"></i> Programar Clase
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <!-- Asistencia (solo INSTRUCTOR y ADMIN) -->
-                <li class="nav-item" sec:authorize="hasAnyAuthority('INSTRUCTOR', 'ADMIN')">
+                <li class="nav-item" sec:authorize="hasAnyAuthority('INSTRUCTOR','ADMIN')">
                     <a class="nav-link" href="/asistencia">
                         <i class="bi bi-clipboard-check"></i> Asistencia
                     </a>
+                </li>
+
+                <!-- Menú para alumnos o público: Inicio, Valores, Clases, Horarios, Contacto -->
+                <li class="nav-item" sec:authorize="!hasAnyAuthority('INSTRUCTOR','ADMIN')">
+                    <a class="nav-link active" href="/#inicio">Inicio</a>
+                </li>
+                <li class="nav-item" sec:authorize="!hasAnyAuthority('INSTRUCTOR','ADMIN')">
+                    <a class="nav-link" href="/#valores">Valores</a>
+                </li>
+                <li class="nav-item" sec:authorize="!hasAnyAuthority('INSTRUCTOR','ADMIN')">
+                    <a class="nav-link" href="/clases/listar">Clases</a>
+                </li>
+                <li class="nav-item" sec:authorize="!hasAnyAuthority('INSTRUCTOR','ADMIN')">
+                    <a class="nav-link" href="/#horarios">Horarios</a>
+                </li>
+                <li class="nav-item" sec:authorize="!hasAnyAuthority('INSTRUCTOR','ADMIN')">
+                    <a class="nav-link" href="/#contacto">Contacto</a>
                 </li>
                 
                 <!-- Mostrar solo si NO está autenticado -->
