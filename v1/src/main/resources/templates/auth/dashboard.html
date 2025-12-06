@@ -101,11 +101,27 @@
         <div class="card shadow-sm h-100">
           <div class="card-body text-center">
             <i class="bi bi-calendar-check" style="font-size: 3rem; color: #19C5C2;"></i>
-            <h5 class="card-title mt-3">Mis Clases</h5>
-            <p class="card-text">Consulta horarios y asistencia</p>
-            <a href="#" class="btn btn-primary">
-              <i class="bi bi-arrow-right"></i> Ir
-            </a>
+            <h5 class="card-title mt-3">Clases</h5>
+            <p class="card-text">Programa nuevas clases o consulta las tuyas</p>
+            <div class="d-grid gap-2">
+              <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle w-100" type="button" id="dropdownClasesInstr" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-calendar-event"></i> Clases (Instructor)
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownClasesInstr">
+                  <li>
+                    <a class="dropdown-item" href="/clases/listar">
+                      <i class="bi bi-eye"></i> Ver Clases
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/clases/crear">
+                      <i class="bi bi-calendar-plus"></i> Programar Clase
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>

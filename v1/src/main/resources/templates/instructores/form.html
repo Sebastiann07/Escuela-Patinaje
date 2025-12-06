@@ -90,6 +90,12 @@
           </div>
 
           <div class="mb-3">
+            <label for="password" class="form-label">Contraseña <span class="text-danger">*</span></label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="********" minlength="6" required>
+            <div class="invalid-feedback">La contraseña debe tener al menos 6 caracteres.</div>
+          </div>
+
+          <div class="mb-3">
             <label for="telefono" class="form-label">Teléfono (Opcional)</label>
             <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="+57 300 000 0000">
           </div>
@@ -151,6 +157,12 @@
             <label for="email" class="form-label">Correo Electrónico <span class="text-danger">*</span></label>
             <input type="email" class="form-control" id="email" name="email" th:value="${instructor.email}" required>
             <div class="invalid-feedback">Por favor ingresa un email válido.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña (dejar en blanco para no cambiar)</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="********" minlength="6">
+            <div class="form-text">Si ingresas una nueva contraseña, se actualizará.</div>
           </div>
 
           <div class="mb-3">

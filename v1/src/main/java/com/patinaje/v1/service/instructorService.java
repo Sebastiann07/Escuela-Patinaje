@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.patinaje.v1.repository.instructorRepository;
 import com.patinaje.v1.model.instructorModel;
@@ -15,6 +16,9 @@ public class instructorService {
     
     @Autowired
     instructorRepository instructorRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // Obtener todos los instructores
     public List<instructorModel> getAllInstructores() {
@@ -28,6 +32,10 @@ public class instructorService {
 
     // Crear un nuevo instructor
     public instructorModel createInstructor(instructorModel instructor) {
+        // Encriptar contraseña si no está encriptada ya
+        if (instructor.getPassword() != null && !instructor.getPassword().startsWith("$2a$")) {
+            instructor.setPassword(passwordEncoder.encode(instructor.getPassword()));
+        }
         instructor.setFechaRegistro(LocalDate.now().toString());
         return instructorRepository.save(instructor);
     }
@@ -47,6 +55,9 @@ public class instructorService {
             }
             if (instructorDetails.getTelefono() != null) {
                 existingInstructor.setTelefono(instructorDetails.getTelefono());
+            }
+            if (instructorDetails.getPassword() != null && !instructorDetails.getPassword().isEmpty()) {
+                existingInstructor.setPassword(passwordEncoder.encode(instructorDetails.getPassword()));
             }
             if (instructorDetails.getEspecialidad() != null) {
                 existingInstructor.setEspecialidad(instructorDetails.getEspecialidad());

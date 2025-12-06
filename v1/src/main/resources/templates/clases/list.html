@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragments/head :: head"></head>
 
@@ -134,12 +134,30 @@
               <a th:href="@{/clases/ver/{id}(id=${clase.id})}" class="btn btn-sm btn-info" title="Ver">
                 <i class="bi bi-eye"></i>
               </a>
-              <a th:href="@{/clases/editar/{id}(id=${clase.id})}" class="btn btn-sm btn-warning" title="Editar">
+              <a th:href="@{/clases/editar/{id}(id=${clase.id})}" class="btn btn-sm btn-warning" title="Editar" sec:authorize="hasAnyAuthority('INSTRUCTOR','ADMIN')">
                 <i class="bi bi-pencil"></i>
               </a>
-              <form th:action="@{/clases/eliminar/{id}(id=${clase.id})}" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro?');">
+              <!-- Marcar asistencia: visible para INSTRUCTOR y ADMIN -->
+              <a th:href="@{/asistencia/marcar/{id}(id=${clase.id})}" class="btn btn-sm btn-primary" title="Marcar asistencia" sec:authorize="hasAnyAuthority('INSTRUCTOR','ADMIN')">
+                <i class="bi bi-clipboard-check"></i>
+              </a>
+              <form th:action="@{/clases/eliminar/{id}(id=${clase.id})}" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro?');" sec:authorize="hasAnyAuthority('INSTRUCTOR','ADMIN')">
                 <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
                   <i class="bi bi-trash"></i>
+                </button>
+              </form>
+              <!-- Inscribirse: visible para ALUMNO cuando hay disponibilidad y clase activa -->
+              <form th:if="${clase.estado == 'Activa'} and ${(clase.inscritos < clase.capacidad)}" th:action="@{/clases/inscribir/{id}(id=${clase.id})}" method="post" style="display:inline;" sec:authorize="hasAuthority('ALUMNO')">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit" class="btn btn-sm btn-success" title="Inscribirme">
+                  <i class="bi bi-person-plus"></i>
+                </button>
+              </form>
+              <!-- Cancelar inscripción: opcional, muestra el botón siempre para ejemplo -->
+              <form th:action="@{/clases/cancelar/{id}(id=${clase.id})}" method="post" style="display:inline;" sec:authorize="hasAuthority('ALUMNO')">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit" class="btn btn-sm btn-secondary" title="Cancelar inscripción">
+                  <i class="bi bi-person-dash"></i>
                 </button>
               </form>
             </td>

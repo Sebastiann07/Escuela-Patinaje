@@ -1,0 +1,736 @@
+openapi: 3.0.3
+info:
+  title: Escuela de Patinaje - API Completa
+  version: "1.0.0"
+  description: >-
+    Documentación OpenAPI que cubre endpoints del frontend (vistas Thymeleaf)
+    y del backend (APIs REST JSON) basados en el README del proyecto.
+  contact:
+    name: Equipo Escuela
+    email: soporte@example.com
+servers:
+  - url: http://localhost:8080
+    description: Servidor local
+tags:
+  - name: Index
+    description: Vistas públicas principales
+  - name: Auth
+    description: Autenticación y registro (vistas)
+  - name: Users
+    description: Usuarios (vistas y API)
+  - name: Clases
+    description: Clases (vistas y API)
+  - name: Instructores
+    description: Instructores (vistas y API)
+  - name: Asistencias
+    description: Gestión de asistencias (vistas y API)
+
+paths:
+  /index/:
+    get:
+      tags: [Index]
+      summary: Página de inicio
+      responses:
+        '200':
+          description: HTML de la página principal
+          content:
+            text/html: {}
+
+  /index/home:
+    get:
+      tags: [Index]
+      summary: Página de inicio (alias)
+      responses:
+        '200':
+          description: HTML de la página principal
+          content:
+            text/html: {}
+
+  /login:
+    get:
+      tags: [Auth]
+      summary: Página de login
+      responses:
+        '200':
+          description: Form de login (HTML)
+          content:
+            text/html: {}
+
+  /registro:
+    get:
+      tags: [Auth]
+      summary: Formulario de registro (HTML)
+      responses:
+        '200':
+          description: Form de registro
+          content:
+            text/html: {}
+    post:
+      tags: [Auth]
+      summary: Registrar usuario (form)
+      requestBody:
+        content:
+          application/x-www-form-urlencoded: {}
+      responses:
+        '302':
+          description: Redirección a /login en caso de éxito
+
+  /dashboard:
+    get:
+      tags: [Auth]
+      summary: Dashboard (HTML)
+      responses:
+        '200':
+          description: Vista del dashboard
+          content:
+            text/html: {}
+
+  /users/listar:
+    get:
+      tags: [Users]
+      summary: Lista de usuarios (HTML)
+      responses:
+        '200':
+          description: Lista en HTML
+          content:
+            text/html: {}
+
+  /users/ver/{id}:
+    get:
+      tags: [Users]
+      summary: Ver usuario (HTML)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalle de usuario (HTML)
+          content:
+            text/html: {}
+        '404':
+          description: Usuario no encontrado
+
+  /users/api/json:
+    get:
+      tags: [Users]
+      summary: Listar usuarios (JSON)
+      responses:
+        '200':
+          description: Listado de usuarios
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  total:
+                    type: integer
+                  path:
+                    type: string
+
+  /users/api/json/{id}:
+    get:
+      tags: [Users]
+      summary: Obtener usuario por id (JSON)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado
+
+  /api/users:
+    get:
+      tags: [Users]
+      summary: Listar usuarios (API REST JSON)
+      responses:
+        '200':
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags: [Users]
+      summary: Crear usuario (API REST)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /api/users/{id}:
+    get:
+      tags: [Users]
+      summary: Obtener usuario por id (API REST)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado
+    put:
+      tags: [Users]
+      summary: Actualizar usuario (API REST)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Usuario actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado
+    delete:
+      tags: [Users]
+      summary: Eliminar usuario (API REST)
+      responses:
+        '200':
+          description: Eliminado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+
+  /clases/listar:
+    get:
+      tags: [Clases]
+      summary: Lista de clases (HTML)
+      responses:
+        '200':
+          description: Lista de clases (HTML)
+          content:
+            text/html: {}
+
+  /clases/api/json:
+    get:
+      tags: [Clases]
+      summary: Listar clases (JSON)
+      responses:
+        '200':
+          description: Lista de clases
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Clase'
+                  total:
+                    type: integer
+                  path:
+                    type: string
+
+  /api/clases:
+    get:
+      tags: [Clases]
+      summary: Listar clases (API REST)
+      responses:
+        '200':
+          description: Lista de clases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Clase'
+    post:
+      tags: [Clases]
+      summary: Crear clase (API REST)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaseCreate'
+      responses:
+        '201':
+          description: Clase creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clase'
+
+  /api/clases/{id}:
+    get:
+      tags: [Clases]
+      summary: Obtener clase por id (API REST)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Clase
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clase'
+        '404':
+          description: Clase no encontrada
+    put:
+      tags: [Clases]
+      summary: Actualizar clase (API REST)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Clase'
+      responses:
+        '200':
+          description: Clase actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clase'
+    delete:
+      tags: [Clases]
+      summary: Eliminar clase (API REST)
+      responses:
+        '200':
+          description: Eliminado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+
+  /instructores/listar:
+    get:
+      tags: [Instructores]
+      summary: Lista de instructores (HTML)
+      responses:
+        '200':
+          description: Lista de instructores (HTML)
+          content:
+            text/html: {}
+
+  /instructores/api/json:
+    get:
+      tags: [Instructores]
+      summary: Listar instructores (JSON)
+      responses:
+        '200':
+          description: Lista de instructores
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Instructor'
+                  total:
+                    type: integer
+                  path:
+                    type: string
+
+  /api/instructores:
+    get:
+      tags: [Instructores]
+      summary: Listar instructores (API REST)
+      responses:
+        '200':
+          description: Lista de instructores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Instructor'
+    post:
+      tags: [Instructores]
+      summary: Crear instructor (API REST)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructorCreate'
+      responses:
+        '201':
+          description: Instructor creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instructor'
+
+  /api/instructores/{id}:
+    get:
+      tags: [Instructores]
+      summary: Obtener instructor por id (API REST)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Instructor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instructor'
+        '404':
+          description: Instructor no encontrado
+    put:
+      tags: [Instructores]
+      summary: Actualizar instructor (API REST)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Instructor'
+      responses:
+        '200':
+          description: Instructor actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instructor'
+    delete:
+      tags: [Instructores]
+      summary: Eliminar instructor (API REST)
+      responses:
+        '200':
+          description: Eliminado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+
+  /asistencia:
+    get:
+      tags: [Asistencias]
+      summary: Listar clases para marcar asistencia (HTML)
+      responses:
+        '200':
+          description: Vista HTML para marcar asistencia
+          content:
+            text/html: {}
+
+  /api/asistencias:
+    get:
+      tags: [Asistencias]
+      summary: Listar asistencias (API REST)
+      responses:
+        '200':
+          description: Lista de asistencias
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asistencia'
+    post:
+      tags: [Asistencias]
+      summary: Registrar asistencia (API REST)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AsistenciaCreate'
+      responses:
+        '201':
+          description: Asistencia registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asistencia'
+
+  /api/asistencias/alumno/{alumnoId}:
+    get:
+      tags: [Asistencias]
+      summary: Obtener asistencias por alumno (API REST)
+      parameters:
+        - name: alumnoId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de asistencias
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asistencia'
+
+  /api/asistencias/clase/{claseId}:
+    get:
+      tags: [Asistencias]
+      summary: Obtener asistencias por clase (API REST)
+      parameters:
+        - name: claseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de asistencias
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asistencia'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        fechaNacimiento:
+          type: string
+          format: date
+        genero:
+          type: string
+        rol:
+          type: string
+          enum: [ADMIN, INSTRUCTOR, ALUMNO]
+        activo:
+          type: boolean
+      example:
+        id: 1
+        name: "María Pérez"
+        email: "maria@example.com"
+        phone: "+34123456789"
+        fechaNacimiento: "2005-09-15"
+        genero: "Femenino"
+        rol: "ALUMNO"
+        activo: true
+
+    UserCreate:
+      type: object
+      required: [name, email, password]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        phone:
+          type: string
+      example:
+        name: "Ana"
+        email: "ana@example.com"
+        password: "pass123"
+        phone: "12345"
+
+    Clase:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        nivel:
+          type: string
+        dia:
+          type: string
+        horaInicio:
+          type: string
+        horaFin:
+          type: string
+        capacidad:
+          type: integer
+        inscritos:
+          type: integer
+        descripcion:
+          type: string
+        estado:
+          type: string
+        instructor:
+          $ref: '#/components/schemas/Instructor'
+      example:
+        id: 1
+        nombre: "Patinaje Artístico"
+        nivel: "Adultos"
+        dia: "Lunes"
+        horaInicio: "18:00"
+        horaFin: "19:00"
+        capacidad: 20
+        inscritos: 5
+        descripcion: "Clase para técnicas de patinaje artístico"
+        estado: "Activa"
+
+    ClaseCreate:
+      type: object
+      required: [nombre, nivel, dia, horaInicio, horaFin, capacidad]
+      properties:
+        nombre:
+          type: string
+        nivel:
+          type: string
+        dia:
+          type: string
+        horaInicio:
+          type: string
+        horaFin:
+          type: string
+        capacidad:
+          type: integer
+        instructorId:
+          type: integer
+
+    Instructor:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        email:
+          type: string
+        telefono:
+          type: string
+        especialidad:
+          type: string
+        experiencia:
+          type: string
+        estado:
+          type: string
+        fechaRegistro:
+          type: string
+      example:
+        id: 1
+        nombre: "Carlos Gómez"
+        email: "instructor@example.com"
+        telefono: "+34123456789"
+        especialidad: "Artístico"
+        experiencia: "5 años"
+        estado: "Activo"
+        fechaRegistro: "2024-01-05"
+
+    InstructorCreate:
+      type: object
+      required: [nombre, email]
+      properties:
+        nombre:
+          type: string
+        email:
+          type: string
+        telefono:
+          type: string
+        especialidad:
+          type: string
+        experiencia:
+          type: string
+
+    Asistencia:
+      type: object
+      properties:
+        id:
+          type: integer
+        fecha:
+          type: string
+          format: date
+        estado:
+          type: string
+        alumno:
+          $ref: '#/components/schemas/User'
+        clase:
+          $ref: '#/components/schemas/Clase'
+      example:
+        id: 1
+        fecha: "2025-12-05"
+        estado: "Presente"
+        alumno:
+          id: 2
+          name: "Ana"
+        clase:
+          id: 1
+
+    AsistenciaCreate:
+      type: object
+      required: [fecha, estado, alumnoId, claseId]
+      properties:
+        fecha:
+          type: string
+          format: date
+        estado:
+          type: string
+        alumnoId:
+          type: integer
+        claseId:
+          type: integer
